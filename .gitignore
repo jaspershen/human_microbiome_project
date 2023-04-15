@@ -41,7 +41,6 @@ vignettes/*.pdf
 ## data
 data
 data_analysis
-<<<<<<< HEAD
 summary
 demo_data
 Supplementary_data
@@ -65,3 +64,4 @@ Supplementary_data/
 
 Supplementary_data
 Supplementary_data/
+
