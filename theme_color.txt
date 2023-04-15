@@ -1,0 +1,33 @@
+season_color = c(
+  "spring" = ggsci::pal_locuszoom()(n=7)[3],
+  "summer" = ggsci::pal_locuszoom()(n=7)[1],
+  "autumn" = ggsci::pal_locuszoom()(n=7)[2],
+  "winter" = ggsci::pal_locuszoom()(n=7)[4]
+)
+
+
+omics_color = c(
+  "Metabolite" = ggsci::pal_jama()(n=7)[1],
+  "Lipidome" = ggsci::pal_aaas()(n=7)[2],
+  "Stool microbiome" = ggsci::pal_jama()(n=7)[2],
+  "Skin microbiome" = ggsci::pal_jama()(n=7)[3],
+  "Oral microbiome" = ggsci::pal_jama()(n=7)[4],
+  "Nasal microbiome" = ggsci::pal_jama()(n=7)[5],
+  "Cytokine" = ggsci::pal_jama()(n=7)[6],
+  "Exposome" = ggsci::pal_jama()(n=7)[7]
+)
+
+base_theme =
+  theme_bw() +
+  theme(axis.text = element_text(size = 12),
+        axis.title = element_text(size = 13),
+        panel.grid.minor = element_blank())
+
+
+body_site_color = c(
+  "Stool" = ggsci::pal_jama()(n=7)[2],
+  "Skin" = ggsci::pal_jama()(n=7)[3],
+  "Oral" = ggsci::pal_jama()(n=7)[4],
+  "Nasal" = ggsci::pal_jama()(n=7)[5],
+  "Cytokine" = ggsci::pal_jama()(n=7)[6]
+)

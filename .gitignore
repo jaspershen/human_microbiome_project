@@ -37,3 +37,31 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+## data
+data
+data_analysis
+summary
+demo_data
+Supplementary_data
+
+data/
+data_analysis/
+summary/
+demo_data/
+Supplementary_data/
+
+##website
+website_files
+Figures
+Figures/
+
+manuscript
+manuscript/
+
+Supplementary_data
+Supplementary_data/
+
+Supplementary_data
+Supplementary_data/
+
