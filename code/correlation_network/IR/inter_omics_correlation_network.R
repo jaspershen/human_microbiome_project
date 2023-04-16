@@ -320,8 +320,6 @@ setwd(
   sum(lipidome_sample_info$subject_id == skin_microbiome_sample_info$subject_id)
 }
 
-
-
 ###get the correlation data
 ###stool microbiome
 {
@@ -391,7 +389,6 @@ setwd(
           sep = "_")
   
 }
-
 
 ###skin microbiome
 {
@@ -755,60 +752,60 @@ molecular_info %>%
 microbiome_info
 
 #####output result
-library(openxlsx)
-wb <- createWorkbook()
-modifyBaseFont(wb, fontSize = 12, fontName = "Time New Roma")
-addWorksheet(wb, sheetName = "Node data", gridLines = TRUE)
-addWorksheet(wb, sheetName = "Edge data", gridLines = TRUE)
-addWorksheet(wb, sheetName = "Microbiome information", gridLines = TRUE)
-addWorksheet(wb, sheetName = "Molecular information", gridLines = TRUE)
-freezePane(wb,
-           sheet = 1,
-           firstRow = TRUE,
-           firstCol = TRUE)
-freezePane(wb,
-           sheet = 2,
-           firstRow = TRUE,
-           firstCol = TRUE)
-freezePane(wb,
-           sheet = 3,
-           firstRow = TRUE,
-           firstCol = TRUE)
-freezePane(wb,
-           sheet = 4,
-           firstRow = TRUE,
-           firstCol = TRUE)
-writeDataTable(
-  wb,
-  sheet = 1,
-  x = as.data.frame(node_data),
-  colNames = TRUE,
-  rowNames = FALSE
-)
-writeDataTable(
-  wb,
-  sheet = 2,
-  x = as.data.frame(edge_data),
-  colNames = TRUE,
-  rowNames = FALSE
-)
-writeDataTable(
-  wb,
-  sheet = 3,
-  x = microbiome_info,
-  colNames = TRUE,
-  rowNames = FALSE
-)
-writeDataTable(
-  wb,
-  sheet = 4,
-  x = molecular_info,
-  colNames = TRUE,
-  rowNames = FALSE
-)
-saveWorkbook(wb = wb,
-             file = "inter_omics_cor_network.xlsx",
-             overwrite = TRUE)
+# library(openxlsx)
+# wb <- createWorkbook()
+# modifyBaseFont(wb, fontSize = 12, fontName = "Time New Roma")
+# addWorksheet(wb, sheetName = "Node data", gridLines = TRUE)
+# addWorksheet(wb, sheetName = "Edge data", gridLines = TRUE)
+# addWorksheet(wb, sheetName = "Microbiome information", gridLines = TRUE)
+# addWorksheet(wb, sheetName = "Molecular information", gridLines = TRUE)
+# freezePane(wb,
+#            sheet = 1,
+#            firstRow = TRUE,
+#            firstCol = TRUE)
+# freezePane(wb,
+#            sheet = 2,
+#            firstRow = TRUE,
+#            firstCol = TRUE)
+# freezePane(wb,
+#            sheet = 3,
+#            firstRow = TRUE,
+#            firstCol = TRUE)
+# freezePane(wb,
+#            sheet = 4,
+#            firstRow = TRUE,
+#            firstCol = TRUE)
+# writeDataTable(
+#   wb,
+#   sheet = 1,
+#   x = as.data.frame(node_data),
+#   colNames = TRUE,
+#   rowNames = FALSE
+# )
+# writeDataTable(
+#   wb,
+#   sheet = 2,
+#   x = as.data.frame(edge_data),
+#   colNames = TRUE,
+#   rowNames = FALSE
+# )
+# writeDataTable(
+#   wb,
+#   sheet = 3,
+#   x = microbiome_info,
+#   colNames = TRUE,
+#   rowNames = FALSE
+# )
+# writeDataTable(
+#   wb,
+#   sheet = 4,
+#   x = molecular_info,
+#   colNames = TRUE,
+#   rowNames = FALSE
+# )
+# saveWorkbook(wb = wb,
+#              file = "inter_omics_cor_network.xlsx",
+#              overwrite = TRUE)
 
 
 ####subnetwork
@@ -910,7 +907,8 @@ plot <-
   ) +
   geom_edge_link(aes(color = pos_neg,
                      width = -log(p_adjust, 10)
-                     # linetype = significance),
+                     # linetype = significance
+                     ),
                      alpha = 1,
                      show.legend = TRUE) +
                    scale_edge_linetype_manual(values = c("p.adj<0.05" = 1,
@@ -962,8 +960,8 @@ plot <-
                  plot
                  
                  # extrafont::loadfonts()
-                 ggsave(plot,
-                        filename = "microbiome_molecular_cor_plot.pdf",
-                        width = 17,
-                        height = 14)
+                 # ggsave(plot,
+                 #        filename = "microbiome_molecular_cor_plot.pdf",
+                 #        width = 17,
+                 #        height = 14)
                  

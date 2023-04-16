@@ -62,5 +62,5 @@ plot(personalized_score_permutation_trim$fc1,
 head(personalized_score_permutation$fc1)
 
 save(personalized_score_permutation, file = "../personalized_score_permutation")
-save(personalized_score_permutation_trim, file = "../trimmed_personalized_score_permutation")
+save(personalized_score_permutation_trim, file = "../personalized_score_permutation_trim")
 

@@ -14,6 +14,9 @@ source(here::here("code/tools.R"))
 ###stool
 load("data_analysis/combine_microbiome/distance/stool/personalized_score")
 load("data_analysis/combine_microbiome/distance/stool/permutation_p_values")
+load(
+  "data_analysis/combine_microbiome/distance/stool/personalized_score_permutation_trim"
+)
 
 personalized_score$fc1_p_adjust = p.adjust(personalized_score$fc1_p,
                                            method = "BH")
@@ -50,9 +53,18 @@ personalized_score$fc2[which(personalized_score$family_mean1 > personalized_scor
 
 stool_personalized_score = personalized_score
 
+###only remain the genus with low SD
+stool_personalized_score <-
+  stool_personalized_score %>%
+  dplyr::filter(genus %in% personalized_score_permutation_trim$genus)
+
+
 #####skin
 load("data_analysis/combine_microbiome/distance/skin/personalized_score")
 load("data_analysis/combine_microbiome/distance/skin/permutation_p_values")
+load(
+  "data_analysis/combine_microbiome/distance/skin/personalized_score_permutation_trim"
+)
 
 personalized_score$fc1_p_adjust = p.adjust(personalized_score$fc1_p,
                                            method = "BH")
@@ -86,9 +98,18 @@ personalized_score$fc2[which(personalized_score$family_mean1 > personalized_scor
 
 skin_personalized_score = personalized_score
 
+
+###only remain the genus with low SD
+skin_personalized_score <-
+  skin_personalized_score %>%
+  dplyr::filter(genus %in% personalized_score_permutation_trim$genus)
+
 #####oral
 load("data_analysis/combine_microbiome/distance/oral/personalized_score")
 load("data_analysis/combine_microbiome/distance/oral/permutation_p_values")
+load(
+  "data_analysis/combine_microbiome/distance/oral/personalized_score_permutation_trim"
+)
 
 personalized_score$fc1_p_adjust = p.adjust(personalized_score$fc1_p,
                                            method = "BH")
@@ -122,9 +143,18 @@ personalized_score$fc2[which(personalized_score$family_mean1 > personalized_scor
 
 oral_personalized_score = personalized_score
 
+###only remain the genus with low SD
+oral_personalized_score <-
+  oral_personalized_score %>%
+  dplyr::filter(genus %in% personalized_score_permutation_trim$genus)
+
+
 #####nasal
 load("data_analysis/combine_microbiome/distance/nasal/personalized_score")
 load("data_analysis/combine_microbiome/distance/nasal/permutation_p_values")
+load(
+  "data_analysis/combine_microbiome/distance/nasal/personalized_score_permutation_trim"
+)
 
 personalized_score$fc1_p_adjust = p.adjust(personalized_score$fc1_p,
                                            method = "BH")
@@ -158,9 +188,14 @@ personalized_score$fc2[which(personalized_score$family_mean1 > personalized_scor
 
 nasal_personalized_score = personalized_score
 
+###only remain the genus with low SD
+nasal_personalized_score <-
+  nasal_personalized_score %>%
+  dplyr::filter(genus %in% personalized_score_permutation_trim$genus)
+
 dir.create("data_analysis/combine_microbiome")
-dir.create("data_analysis/combine_microbiome/cladogram/")
-setwd("data_analysis/combine_microbiome/cladogram/")
+dir.create("data_analysis/combine_microbiome/cladogram_remove_high_sd/")
+setwd("data_analysis/combine_microbiome/cladogram_remove_high_sd/")
 
 temp_data =
   rbind(
@@ -191,7 +226,7 @@ plot =
   ) +
   scale_colour_manual(values = body_site_color)
 plot
-# ggsave(plot, filename = "4_body_site_ovrelap.pdf", width = 9, height = 7)
+ggsave(plot, filename = "4_body_site_ovrelap.pdf", width = 9, height = 7)
 
 ####HMP
 physeqGenus_ST
@@ -274,7 +309,7 @@ if (length(remove_name) > 0) {
     variable_info %>%
     dplyr::filter(!Genus %in% remove_name)
   expression_data =
-    expression_data[rownames(variable_info), ]
+    expression_data[rownames(variable_info),]
 }
 
 expression_data = otu_table(expression_data, taxa_are_rows = TRUE)
@@ -670,7 +705,10 @@ p3 =
 
 p3
 
-# ggsave(p3, filename = "fc1_cladogram.pdf", width = 14, height = 14)
+ggsave(p3,
+       filename = "fc1_cladogram.pdf",
+       width = 14,
+       height = 14)
 
 ###output results
 temp_data =
@@ -680,10 +718,10 @@ temp_data =
   temp_data %>%
   dplyr::filter(isTip)
 
-# openxlsx::write.xlsx(temp_data,
-#                      file = "fc1_tree_data.xlsx",
-#                      asTable = TRUE,
-#                      overwrite = TRUE)
+openxlsx::write.xlsx(temp_data,
+                     file = "fc1_tree_data.xlsx",
+                     asTable = TRUE,
+                     overwrite = TRUE)
 
 #####summary information
 plot <-
@@ -704,7 +742,10 @@ plot <-
 
 plot
 
-# ggsave(plot, filename = "Personized_score_boxplot.pdf", width = 10, height = 7)
+ggsave(plot,
+       filename = "Personized_score_boxplot.pdf",
+       width = 10,
+       height = 7)
 
 temp <-
   personalized_score %>%
@@ -752,7 +793,6 @@ oral_vs_nasal_test <-
 # oral_vs_nasal_test
 # sink()
 
-
 stool_mean <-
   mean(temp$fc1[temp$class == "Stool"])
 stool_quantile <-
@@ -779,22 +819,22 @@ nasal_quantile <-
 # stool_mean
 # cat("stool quantile\n")
 # stool_quantile
-#
+# 
 # cat("skin mean\n")
 # skin_mean
 # cat("skin quantile\n")
 # skin_quantile
-#
+# 
 # cat("oral mean\n")
 # oral_mean
 # cat("oral quantile\n")
 # oral_quantile
-#
+# 
 # cat("nasal mean\n")
 # nasal_mean
 # cat("nasal quantile\n")
 # nasal_quantile
-#
+# 
 # sink()
 
 library(plyr)
@@ -843,10 +883,10 @@ plot =
 
 plot
 
-# ggsave(plot,
-#        filename = "Personized_score_boxplot_based_on_phylum.pdf",
-#        width = 16,
-#        height = 10)
+ggsave(plot,
+       filename = "Personized_score_boxplot_based_on_phylum.pdf",
+       width = 16,
+       height = 10)
 
 
 temp_data <-
@@ -909,10 +949,10 @@ plot =
 
 plot
 
-# ggsave(plot,
-#        filename = "Personized_score_boxplot_based_on_body_site.pdf",
-#        width = 10,
-#        height = 4)
+ggsave(plot,
+       filename = "Personized_score_boxplot_based_on_body_site.pdf",
+       width = 10,
+       height = 4)
 
 
 temp_data <-
@@ -928,4 +968,4 @@ temp_data <-
   )) %>%
   dplyr::rename(dmi = fc1)
 
-# write.csv(temp_data, "dmi_based_on_phylum.csv", row.names = FALSE)
+write.csv(temp_data, "dmi_based_on_phylum.csv", row.names = FALSE)

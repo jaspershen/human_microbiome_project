@@ -24,7 +24,7 @@ source("code/tools.R")
 
 ######work directory
 masstools::setwd_project()
-setwd("data_analysis/stool_microbiome_vs_proteome_IS/")
+setwd("data_analysis/correlation_network/whole_data_set_IS/stool_microbiome_vs_proteome_IS/")
 
 ####load data
 ###stool microbiome
@@ -76,14 +76,12 @@ dim(stool_microbiome_variable_info)
 rownames(stool_microbiome_expression_data) == stool_microbiome_variable_info$variable_id
 colnames(stool_microbiome_expression_data) == stool_microbiome_sample_info$sample_id
 
-
 stool_microbiome_sample_info = 
   stool_microbiome_sample_info %>% 
   dplyr::filter(IRIS == "IS")
 
 stool_microbiome_expression_data =
   stool_microbiome_expression_data[,stool_microbiome_sample_info$sample_id]
-
 
 ###plasma proteome
 {
@@ -108,8 +106,8 @@ length(unique(proteome_sample_info$subject_id))
 
 proteome_sample_info = 
   proteome_sample_info %>% 
-  dplyr::left_join(stool_microbiome_sample_info[,c("sample_id", "IRIS")],
-                   by = "sample_id") %>% 
+  # dplyr::left_join(stool_microbiome_sample_info[,c("sample_id", "IRIS")],
+  #                  by = "sample_id") %>% 
   dplyr::filter(IRIS == "IS")
 
 
@@ -187,16 +185,16 @@ length(remain_idx)
 stool_microbiome_expression_data = stool_microbiome_expression_data[remain_idx,]
 stool_microbiome_variable_info = stool_microbiome_variable_info[remain_idx,,drop = FALSE]
 
-##save data
-{
-  save(stool_microbiome_expression_data, file = "stool_microbiome_expression_data")
-  save(stool_microbiome_variable_info, file = "stool_microbiome_variable_info")
-  save(stool_microbiome_sample_info, file = "stool_microbiome_sample_info")
-
-  save(proteome_expression_data, file = "proteome_expression_data")
-  save(proteome_variable_info, file = "proteome_variable_info")
-  save(proteome_sample_info, file = "proteome_sample_info")
-}
+# ##save data
+# {
+#   save(stool_microbiome_expression_data, file = "stool_microbiome_expression_data")
+#   save(stool_microbiome_variable_info, file = "stool_microbiome_variable_info")
+#   save(stool_microbiome_sample_info, file = "stool_microbiome_sample_info")
+# 
+#   save(proteome_expression_data, file = "proteome_expression_data")
+#   save(proteome_variable_info, file = "proteome_variable_info")
+#   save(proteome_sample_info, file = "proteome_sample_info")
+# }
 
 {
   load("stool_microbiome_expression_data")
@@ -275,7 +273,6 @@ library(furrr)
 
 load("stool_microbiome_proteome_lm_adjusted_cor_spearman")
 
-
 ###here we use the lm_adjusted_cor
 sum(stool_microbiome_proteome_lm_adjusted_cor_spearman$p_adjust < 0.2)
 
@@ -319,7 +316,6 @@ node_data =
                             !is.na(true_name) ~ true_name)) %>%
   dplyr::select(-Genus)
 
-
 node_data = 
 node_data %>% 
   dplyr::filter(!stringr::str_detect(true_name, "C[0-9]{1,2}H[0-9]{1,2}"))
@@ -348,19 +344,18 @@ edge_data =
     p_adjust >= 0.05 ~ "0.05<p.adj<0.2",
   ))
 
-
-library(openxlsx)
-wb <- createWorkbook()
-modifyBaseFont(wb, fontSize = 12, fontName = "Time New Roma")
-addWorksheet(wb, sheetName = "Node data", gridLines = TRUE)
-addWorksheet(wb, sheetName = "Edge data", gridLines = TRUE)
-freezePane(wb, sheet = 1, firstRow = TRUE, firstCol = TRUE)
-freezePane(wb, sheet = 2, firstRow = TRUE, firstCol = TRUE)
-writeDataTable(wb, sheet = 1, x = node_data,
-               colNames = TRUE, rowNames = FALSE)
-writeDataTable(wb, sheet = 2, x = edge_data,
-               colNames = TRUE, rowNames = FALSE)
-saveWorkbook(wb = wb, file = "stool_microbiome_vs_proteome.xlsx", overwrite = TRUE)
+# library(openxlsx)
+# wb <- createWorkbook()
+# modifyBaseFont(wb, fontSize = 12, fontName = "Time New Roma")
+# addWorksheet(wb, sheetName = "Node data", gridLines = TRUE)
+# addWorksheet(wb, sheetName = "Edge data", gridLines = TRUE)
+# freezePane(wb, sheet = 1, firstRow = TRUE, firstCol = TRUE)
+# freezePane(wb, sheet = 2, firstRow = TRUE, firstCol = TRUE)
+# writeDataTable(wb, sheet = 1, x = node_data,
+#                colNames = TRUE, rowNames = FALSE)
+# writeDataTable(wb, sheet = 2, x = edge_data,
+#                colNames = TRUE, rowNames = FALSE)
+# saveWorkbook(wb = wb, file = "stool_microbiome_vs_proteome.xlsx", overwrite = TRUE)
 
 temp_data <- 
   tidygraph::tbl_graph(nodes = node_data, 
@@ -379,7 +374,7 @@ plot <-
   geom_edge_link(
     strength = 1,
     aes(
-      color = cor,
+      # color = cor,
       width = abs(cor),
       linetype = significance
     ),
@@ -418,12 +413,12 @@ plot <-
 
 plot
 
-extrafont::loadfonts()
-
-ggsave(plot,
-       filename = "stool_microbiome_proteome_cor_plot_example.pdf",
-       width = 8.5,
-       height = 7)
+# extrafont::loadfonts()
+# 
+# ggsave(plot,
+#        filename = "stool_microbiome_proteome_cor_plot_example.pdf",
+#        width = 8.5,
+#        height = 7)
 
 
 

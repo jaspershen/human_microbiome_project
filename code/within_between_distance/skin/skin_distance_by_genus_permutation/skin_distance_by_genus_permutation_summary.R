@@ -54,7 +54,11 @@ plot(personalized_score_permutation$fc1,
      personalized_score_permutation$fc1_sd)
 abline(0, 0.15)
 
-personalized_score_permutation_trim <- filter(personalized_score_permutation, fc1 > 15 * fc1_sd)
+plot(personalized_score_permutation$fc1,
+     personalized_score_permutation$fc1_sd)
+
+personalized_score_permutation_trim <- 
+  filter(personalized_score_permutation, fc1 > 15 * fc1_sd)
 
 plot(personalized_score_permutation_trim$fc1,
      personalized_score_permutation_trim$fc1_sd)
@@ -62,7 +66,7 @@ plot(personalized_score_permutation_trim$fc1,
 head(personalized_score_permutation$fc1)
 
 save(personalized_score_permutation, file = "../personalized_score_permutation")
-save(personalized_score_permutation_trim, file = "../trimmed_personalized_score_permutation")
+save(personalized_score_permutation_trim, file = "../personalized_score_permutation_trim")
 
 
 

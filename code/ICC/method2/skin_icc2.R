@@ -13,7 +13,7 @@
 
 #+ r setup, echo=TRUE, eval = TRUE, include = TRUE
 
-no_function()
+# no_function()
 # set work directory
 
 masstools::setwd_project()
@@ -106,9 +106,9 @@ save(vd_skin_asv2, file = "data_analysis/skin_microbiome/ICC/vd_skin_asv2")
 
 load(here::here("data_analysis/skin_microbiome/data_preparation/variable_info"))
 
-variable_info =
-variable_info %>% 
-  dplyr::filter(variable_id %in% rownames(vd_skin_asv))
+# variable_info =
+# variable_info %>% 
+#   dplyr::filter(variable_id %in% rownames(vd_skin_asv2))
 
 ####----------------------------------------------------------------------------
 ####Phylum level

@@ -39,9 +39,9 @@ myVD <- function(ds, trans){
   htb = as.data.frame(htb)
   vd = {}
   for (i in 8:ncol(htb)) {
-    if (trans == "Original") {model <- tryCatch(lmer(scale(htb[, i]) ~ 1 + Days + A1C + SSPG + FPG + (1|SubjectID), data = htb, REML = FALSE), error=function(err) NA)}
-    if (trans == "Log10") {model <- tryCatch(lmer(scale(log10(htb[, i])) ~ 1 + Days + A1C + SSPG + FPG + (1|SubjectID), data = htb, REML = FALSE), error=function(err) NA)}
-    if (trans == "Arcsin") {model <- tryCatch(lmer(scale(asin(sqrt(htb[, i]))) ~ 1 + Days + A1C + SSPG + FPG + (1|SubjectID), data = htb, REML = FALSE), error=function(err) NA)}
+    if (trans == "Original") {model <- tryCatch(lmer(scale(htb[, i]) ~ 1 + Days + (1|SubjectID), data = htb, REML = FALSE), error=function(err) NA)}
+    if (trans == "Log10") {model <- tryCatch(lmer(scale(log10(htb[, i])) ~ 1 + Days + (1|SubjectID), data = htb, REML = FALSE), error=function(err) NA)}
+    if (trans == "Arcsin") {model <- tryCatch(lmer(scale(asin(sqrt(htb[, i]))) ~ 1 + Days + (1|SubjectID), data = htb, REML = FALSE), error=function(err) NA)}
     if (!is.na(model)) {
       v.var = as.data.frame(VarCorr(model), comp=c("Variance"))[, 4] #Extracting random effect variances
       v.var <- c(v.var, as.data.frame(anova(model))[, 2]) #Extracting Sum Sq for fixed effects
@@ -53,7 +53,7 @@ myVD <- function(ds, trans){
   }
   rownames(vd) <- colnames(htb)[-c(1:7)]
   vd <- as.data.frame(vd)
-  colnames(vd) <- c("random_Subject", "random_Residual", "fix_Days", "fix_A1C", "fix_SSPG", "fix_FPG")
+  colnames(vd) <- c("random_Subject", "random_Residual")
   return(vd)
 } #End of function
 
@@ -99,8 +99,8 @@ ds =
   dplyr::select(SubjectID, SampleID,A1C, SSPG, FPG, CL4, CollectionDate, everything())
 
 vd_oral_asv2 = myVD(ds = ds, trans = "Arcsin")
-dir.create("data_analysis/oral_microbiome/ICC/")
-save(vd_oral_asv2, file = "data_analysis/oral_microbiome/ICC/vd_oral_asv2")
+dir.create("data_analysis/oral_microbiome/ICC_without_confounder/")
+save(vd_oral_asv2, file = "data_analysis/oral_microbiome/ICC_without_confounder/vd_oral_asv2")
 
 ###load variable_info
 
@@ -137,8 +137,8 @@ oral_microbiome_expression_data %>%
   dplyr::select(SubjectID, SampleID,A1C, SSPG, FPG, CL4, CollectionDate, everything())
 
 vd_oral_phylum2 = myVD(ds = ds, trans = "Arcsin")
-dir.create("data_analysis/oral_microbiome/ICC/")
-save(vd_oral_phylum2, file = "data_analysis/oral_microbiome/ICC/vd_oral_phylum2")
+dir.create("data_analysis/oral_microbiome/ICC_without_confounder/")
+save(vd_oral_phylum2, file = "data_analysis/oral_microbiome/ICC_without_confounder/vd_oral_phylum2")
 
 
 ####----------------------------------------------------------------------------
@@ -168,8 +168,8 @@ ds =
   dplyr::select(SubjectID, SampleID,A1C, SSPG, FPG, CL4, CollectionDate, everything())
 
 vd_oral_order2 = myVD(ds = ds, trans = "Arcsin")
-dir.create("data_analysis/oral_microbiome/ICC/")
-save(vd_oral_order2, file = "data_analysis/oral_microbiome/ICC/vd_oral_order2")
+dir.create("data_analysis/oral_microbiome/ICC_without_confounder/")
+save(vd_oral_order2, file = "data_analysis/oral_microbiome/ICC_without_confounder/vd_oral_order2")
 
 
 ####----------------------------------------------------------------------------
@@ -199,8 +199,8 @@ ds =
   dplyr::select(SubjectID, SampleID,A1C, SSPG, FPG, CL4, CollectionDate, everything())
 
 vd_oral_genus2 = myVD(ds = ds, trans = "Arcsin")
-dir.create("data_analysis/oral_microbiome/ICC/")
-save(vd_oral_genus2, file = "data_analysis/oral_microbiome/ICC/vd_oral_genus2")
+dir.create("data_analysis/oral_microbiome/ICC_without_confounder/")
+save(vd_oral_genus2, file = "data_analysis/oral_microbiome/ICC_without_confounder/vd_oral_genus2")
 
 
 ####----------------------------------------------------------------------------
@@ -230,8 +230,8 @@ ds =
   dplyr::select(SubjectID, SampleID,A1C, SSPG, FPG, CL4, CollectionDate, everything())
 
 vd_oral_family2 = myVD(ds = ds, trans = "Arcsin")
-dir.create("data_analysis/oral_microbiome/ICC/")
-save(vd_oral_family2, file = "data_analysis/oral_microbiome/ICC/vd_oral_family2")
+dir.create("data_analysis/oral_microbiome/ICC_without_confounder/")
+save(vd_oral_family2, file = "data_analysis/oral_microbiome/ICC_without_confounder/vd_oral_family2")
 
 ####----------------------------------------------------------------------------
 ####class level
@@ -259,8 +259,8 @@ ds =
   dplyr::select(SubjectID, SampleID,A1C, SSPG, FPG, CL4, CollectionDate, everything())
 
 vd_oral_class2 = myVD(ds = ds, trans = "Arcsin")
-dir.create("data_analysis/oral_microbiome/ICC/")
-save(vd_oral_class2, file = "data_analysis/oral_microbiome/ICC/vd_oral_class2")
+dir.create("data_analysis/oral_microbiome/ICC_without_confounder/")
+save(vd_oral_class2, file = "data_analysis/oral_microbiome/ICC_without_confounder/vd_oral_class2")
 
 
 

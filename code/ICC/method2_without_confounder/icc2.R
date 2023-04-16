@@ -23,10 +23,10 @@ source("code/tools.R")
 
 ###ASV
 ####load data asv level
-load(here::here("data_analysis/nasal_microbiome/ICC/vd_nasal_asv2"))
-load(here::here("data_analysis/oral_microbiome/ICC/vd_oral_asv2"))
-load(here::here("data_analysis/skin_microbiome/ICC/vd_skin_asv2"))
-load(here::here("data_analysis/stool_microbiome/ICC/vd_stool_asv2"))
+load(here::here("data_analysis/nasal_microbiome/ICC_without_confounder/vd_nasal_asv2"))
+load(here::here("data_analysis/oral_microbiome/ICC_without_confounder/vd_oral_asv2"))
+load(here::here("data_analysis/skin_microbiome/ICC_without_confounder/vd_skin_asv2"))
+load(here::here("data_analysis/stool_microbiome/ICC_without_confounder/vd_stool_asv2"))
 
 #Combine all vd tables
 vd.comb = 
@@ -44,7 +44,7 @@ vd.comb %>%
   dplyr::filter(!is.na(ICC))
 
 library(reshape2)
-pd = vd.comb[, 7:8]
+pd = vd.comb[, 4:5]
 pd$Variables = rownames(pd)
 pd <- melt(pd)
 
@@ -93,7 +93,8 @@ ggplot(data = pd, aes(x = dt, y = value)) +
 plot
 
 masstools::setwd_project()
-setwd("data_analysis/ICC")
+dir.create("data_analysis/ICC_without_confounder")
+setwd("data_analysis/ICC_without_confounder")
 plot
 # ggsave(plot, filename = "icc_of_different_body_site_microbiome_asv2.pdf", width = 9, height = 7)
 
@@ -114,10 +115,10 @@ pd_asv = pd
 
 ###Class
 ####load data class level
-load(here::here("data_analysis/nasal_microbiome/ICC/vd_nasal_class2"))
-load(here::here("data_analysis/oral_microbiome/ICC/vd_oral_class2"))
-load(here::here("data_analysis/skin_microbiome/ICC/vd_skin_class2"))
-load(here::here("data_analysis/stool_microbiome/ICC/vd_stool_class2"))
+load(here::here("data_analysis/nasal_microbiome/ICC_without_confounder/vd_nasal_class2"))
+load(here::here("data_analysis/oral_microbiome/ICC_without_confounder/vd_oral_class2"))
+load(here::here("data_analysis/skin_microbiome/ICC_without_confounder/vd_skin_class2"))
+load(here::here("data_analysis/stool_microbiome/ICC_without_confounder/vd_stool_class2"))
 
 #Combine all vd tables
 vd.comb = 
@@ -135,7 +136,7 @@ vd.comb =
   dplyr::filter(!is.na(ICC))
 
 library(reshape2)
-pd = vd.comb[, 7:8]
+pd = vd.comb[, 4:5]
 pd$Variables = rownames(pd)
 pd <- melt(pd)
 
@@ -204,10 +205,10 @@ pd_class = pd
 
 ###family
 ####load data family level
-load(here::here("data_analysis/nasal_microbiome/ICC/vd_nasal_family2"))
-load(here::here("data_analysis/oral_microbiome/ICC/vd_oral_family2"))
-load(here::here("data_analysis/skin_microbiome/ICC/vd_skin_family2"))
-load(here::here("data_analysis/stool_microbiome/ICC/vd_stool_family2"))
+load(here::here("data_analysis/nasal_microbiome/ICC_without_confounder/vd_nasal_family2"))
+load(here::here("data_analysis/oral_microbiome/ICC_without_confounder/vd_oral_family2"))
+load(here::here("data_analysis/skin_microbiome/ICC_without_confounder/vd_skin_family2"))
+load(here::here("data_analysis/stool_microbiome/ICC_without_confounder/vd_stool_family2"))
 
 #Combine all vd tables
 vd.comb = 
@@ -225,7 +226,7 @@ vd.comb =
   dplyr::filter(!is.na(ICC))
 
 library(reshape2)
-pd = vd.comb[, 7:8]
+pd = vd.comb[, 4:5]
 pd$Variables = rownames(pd)
 pd <- melt(pd)
 
@@ -291,10 +292,10 @@ pd_family = pd
 
 ###genus
 ####load data genus level
-load(here::here("data_analysis/nasal_microbiome/ICC/vd_nasal_genus2"))
-load(here::here("data_analysis/oral_microbiome/ICC/vd_oral_genus2"))
-load(here::here("data_analysis/skin_microbiome/ICC/vd_skin_genus2"))
-load(here::here("data_analysis/stool_microbiome/ICC/vd_stool_genus2"))
+load(here::here("data_analysis/nasal_microbiome/ICC_without_confounder/vd_nasal_genus2"))
+load(here::here("data_analysis/oral_microbiome/ICC_without_confounder/vd_oral_genus2"))
+load(here::here("data_analysis/skin_microbiome/ICC_without_confounder/vd_skin_genus2"))
+load(here::here("data_analysis/stool_microbiome/ICC_without_confounder/vd_stool_genus2"))
 
 #Combine all vd tables
 vd.comb = 
@@ -312,7 +313,7 @@ vd.comb =
   dplyr::filter(!is.na(ICC))
 
 library(reshape2)
-pd = vd.comb[, 7:8]
+pd = vd.comb[, 4:5]
 pd$Variables = rownames(pd)
 pd <- melt(pd)
 
@@ -378,10 +379,10 @@ pd_genus = pd
 
 ###order
 ####load data order level
-load(here::here("data_analysis/nasal_microbiome/ICC/vd_nasal_order2"))
-load(here::here("data_analysis/oral_microbiome/ICC/vd_oral_order2"))
-load(here::here("data_analysis/skin_microbiome/ICC/vd_skin_order2"))
-load(here::here("data_analysis/stool_microbiome/ICC/vd_stool_order2"))
+load(here::here("data_analysis/nasal_microbiome/ICC_without_confounder/vd_nasal_order2"))
+load(here::here("data_analysis/oral_microbiome/ICC_without_confounder/vd_oral_order2"))
+load(here::here("data_analysis/skin_microbiome/ICC_without_confounder/vd_skin_order2"))
+load(here::here("data_analysis/stool_microbiome/ICC_without_confounder/vd_stool_order2"))
 
 #Combine all vd tables
 vd.comb = 
@@ -399,7 +400,7 @@ vd.comb =
   dplyr::filter(!is.na(ICC))
 
 library(reshape2)
-pd = vd.comb[, 7:8]
+pd = vd.comb[, 4:5]
 pd$Variables = rownames(pd)
 pd <- melt(pd)
 
@@ -465,10 +466,10 @@ pd_order = pd
 
 ###phylum
 ####load data phylum level
-load(here::here("data_analysis/nasal_microbiome/ICC/vd_nasal_phylum2"))
-load(here::here("data_analysis/oral_microbiome/ICC/vd_oral_phylum2"))
-load(here::here("data_analysis/skin_microbiome/ICC/vd_skin_phylum2"))
-load(here::here("data_analysis/stool_microbiome/ICC/vd_stool_phylum2"))
+load(here::here("data_analysis/nasal_microbiome/ICC_without_confounder/vd_nasal_phylum2"))
+load(here::here("data_analysis/oral_microbiome/ICC_without_confounder/vd_oral_phylum2"))
+load(here::here("data_analysis/skin_microbiome/ICC_without_confounder/vd_skin_phylum2"))
+load(here::here("data_analysis/stool_microbiome/ICC_without_confounder/vd_stool_phylum2"))
 
 #Combine all vd tables
 vd.comb = 
@@ -486,7 +487,7 @@ vd.comb =
   dplyr::filter(!is.na(ICC))
 
 library(reshape2)
-pd = vd.comb[, 7:8]
+pd = vd.comb[, 4:5]
 pd$Variables = rownames(pd)
 pd <- melt(pd)
 
@@ -606,6 +607,8 @@ library(ggpubr)
 # Box plots
 temp_data$dt <- 
   factor(x = temp_data$dt, levels = c("Stool", "Skin", "Oral", "Nasal"))
+
+save(temp_data, file = "temp_data")
 
 bxp <- ggboxplot(
   temp_data,

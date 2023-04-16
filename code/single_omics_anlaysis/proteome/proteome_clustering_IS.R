@@ -10,43 +10,57 @@ rm(list = ls())
 
 source("code/tools.R")
 
-###plasma metabolome
+metadata <-
+  readr::read_csv("Figures/Figure6/metadata/metadata.subject.csv")
+
+###plasma proteome
 {
   load(here::here(
-    "data_analysis/metabolome/data_preparation/expression_data"
+    "data_analysis/proteome/data_preparation/expression_data"
   ))
-  load(here::here("data_analysis/metabolome/data_preparation/sample_info"))
+  load(here::here("data_analysis/proteome/data_preparation/sample_info"))
   load(here::here(
-    "data_analysis/metabolome/data_preparation/variable_info"
+    "data_analysis/proteome/data_preparation/variable_info"
   ))
 }
 
-metabolome_expression_data = expression_data
-metabolome_sample_info = sample_info
-metabolome_variable_info = variable_info
+proteome_expression_data = expression_data
+proteome_sample_info = sample_info
+proteome_variable_info = variable_info
 
-metabolome_sample_info <-
-  metabolome_sample_info %>% 
+proteome_sample_info <-
+  proteome_sample_info %>% 
   dplyr::mutate(Date = CollectionDate)
 
-metabolome_sample_info$CollectionDate =
-  as.Date(metabolome_sample_info$CollectionDate, "%m/%d/%y")
+proteome_sample_info$Date =
+  as.Date(proteome_sample_info$Date, "%m/%d/%y")
 
-dim(metabolome_expression_data)
-length(unique(metabolome_sample_info$subject_id))
+dim(proteome_expression_data)
+length(unique(proteome_sample_info$subject_id))
 
 #######work directory
 masstools::setwd_project()
-dir.create("data_analysis/metabolome/clustering",
+dir.create("data_analysis/proteome/clustering_IS",
            recursive = TRUE)
-setwd("data_analysis/metabolome/clustering")
+setwd("data_analysis/proteome/clustering_IS")
 
-head(metabolome_sample_info)
-dim(metabolome_expression_data)
+head(proteome_sample_info)
+dim(proteome_expression_data)
+
+###only remain IS
+proteome_sample_info <-
+  proteome_sample_info %>%
+  # dplyr::left_join(metadata[, c("SubjectID", "IRIS")],
+  #                  by = c("subject_id" = "SubjectID")) %>%
+  dplyr::filter(!is.na(IRIS)) %>%
+  dplyr::filter(IRIS == "IS")
+
+proteome_expression_data <-
+  proteome_expression_data[, proteome_sample_info$sample_id]
 
 ###only remain the infectional and pro and post two samples
 infection_idx <-
-  which(metabolome_sample_info$CL4 == "Infection")
+  which(proteome_sample_info$CL4 == "Infection")
 
 #pre-healthy (–H) state (healthy baselines within 186 days before the event’s onset),
 #event early (EE) state (visits on days 1–6 of the event),
@@ -58,9 +72,9 @@ all_index <-
   infection_idx %>%
   purrr::map(function(i) {
     temp_info <-
-      metabolome_sample_info[i,]
+      proteome_sample_info[i,]
     idx <-
-      which(metabolome_sample_info$subject_id == temp_info$subject_id)
+      which(proteome_sample_info$subject_id == temp_info$subject_id)
     if (length(idx) < 5) {
       return(
         list(
@@ -72,9 +86,9 @@ all_index <-
         )
       )
     }
-    temp_sample_info <- metabolome_sample_info[idx,]
+    temp_sample_info <- proteome_sample_info[idx,]
     day_diff <-
-      as.numeric(temp_sample_info$Date - metabolome_sample_info[i,]$Date)
+      as.numeric(temp_sample_info$Date - proteome_sample_info[i,]$Date)
     
     negtaive_h_idx <-
       which(day_diff < -6 & day_diff >= -180)
@@ -151,28 +165,28 @@ new_expression_data <-
   all_index %>%
   purrr::map(function(idx) {
     negtaive_h <-
-      metabolome_expression_data[, idx$negtaive_h_id, drop = FALSE] %>%
+      proteome_expression_data[, idx$negtaive_h_id, drop = FALSE] %>%
       apply(1, mean)
     
     ee <-
-      metabolome_expression_data[, idx$ee_id, drop = FALSE] %>%
-      apply(1, mean) %>%
-      `-`(negtaive_h)
+      proteome_expression_data[, idx$ee_id, drop = FALSE] %>%
+      apply(1, mean)
+      # `-`(negtaive_h)
     
     el <-
-      metabolome_expression_data[, idx$el_id, drop = FALSE] %>%
-      apply(1, mean) %>%
-      `-`(negtaive_h)
+      proteome_expression_data[, idx$el_id, drop = FALSE] %>%
+      apply(1, mean)
+      # `-`(negtaive_h)
     
     re <-
-      metabolome_expression_data[, idx$re_id, drop = FALSE] %>%
-      apply(1, mean) %>%
-      `-`(negtaive_h)
+      proteome_expression_data[, idx$re_id, drop = FALSE] %>%
+      apply(1, mean)
+      # `-`(negtaive_h)
     
     positive_h <-
-      metabolome_expression_data[, idx$positive_h_id, drop = FALSE] %>%
-      apply(1, mean) %>%
-      `-`(negtaive_h)
+      proteome_expression_data[, idx$positive_h_id, drop = FALSE] %>%
+      apply(1, mean)
+      # `-`(negtaive_h)
     
     temp <-
       cbind(negtaive_h, ee, el, re, positive_h) %>%
@@ -204,7 +218,7 @@ new_sample_info <-
   )
 
 new_variable_info <-
-  metabolome_variable_info
+  proteome_variable_info
 
 sum(is.na(new_expression_data))
 
@@ -317,7 +331,7 @@ ggsave(plot,
        width = 7,
        height = 7)
 
-clust = 5
+clust = 3
 
 c <- mfuzz(data.s, c = clust, m = m1)
 
@@ -385,7 +399,7 @@ for (cluster_idx in 1:clust) {
   cluster_data <-
     cluster_data %>%
     dplyr::filter(membership > 0.5) %>%
-    dplyr::left_join(metabolome_variable_info, by = "variable_id")
+    dplyr::left_join(proteome_variable_info, by = "variable_id")
   
   openxlsx::write.xlsx(
     x = cluster_data,

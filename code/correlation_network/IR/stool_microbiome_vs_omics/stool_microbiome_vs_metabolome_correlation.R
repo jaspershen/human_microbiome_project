@@ -24,7 +24,7 @@ source("code/tools.R")
 
 ######work directory
 masstools::setwd_project()
-setwd("data_analysis/stool_microbiome_vs_metabolome_IR/")
+setwd("data_analysis/correlation_network/whole_data_set_IR/stool_microbiome_vs_metabolome_IR/")
 
 ####load data
 ###stool microbiome
@@ -76,8 +76,6 @@ dim(stool_microbiome_variable_info)
 rownames(stool_microbiome_expression_data) == stool_microbiome_variable_info$variable_id
 colnames(stool_microbiome_expression_data) == stool_microbiome_sample_info$sample_id
 
-
-
 stool_microbiome_sample_info = 
   stool_microbiome_sample_info %>% 
   dplyr::filter(IRIS == "IR")
@@ -106,16 +104,12 @@ metabolome_sample_info$CollectionDate =
 dim(metabolome_expression_data)
 length(unique(metabolome_sample_info$subject_id))
 
-
 metabolome_sample_info = 
   metabolome_sample_info %>% 
   dplyr::filter(IRIS == "IR")
 
-
 metabolome_expression_data = 
   metabolome_expression_data[,metabolome_sample_info$sample_id]
-
-
 
 ###match samples
 dim(stool_microbiome_sample_info)
@@ -188,16 +182,16 @@ length(remain_idx)
 stool_microbiome_expression_data = stool_microbiome_expression_data[remain_idx,]
 stool_microbiome_variable_info = stool_microbiome_variable_info[remain_idx,,drop = FALSE]
 
-##save data
-{
-  save(stool_microbiome_expression_data, file = "stool_microbiome_expression_data")
-  save(stool_microbiome_variable_info, file = "stool_microbiome_variable_info")
-  save(stool_microbiome_sample_info, file = "stool_microbiome_sample_info")
-
-  save(metabolome_expression_data, file = "metabolome_expression_data")
-  save(metabolome_variable_info, file = "metabolome_variable_info")
-  save(metabolome_sample_info, file = "metabolome_sample_info")
-}
+# ##save data
+# {
+#   save(stool_microbiome_expression_data, file = "stool_microbiome_expression_data")
+#   save(stool_microbiome_variable_info, file = "stool_microbiome_variable_info")
+#   save(stool_microbiome_sample_info, file = "stool_microbiome_sample_info")
+# 
+#   save(metabolome_expression_data, file = "metabolome_expression_data")
+#   save(metabolome_variable_info, file = "metabolome_variable_info")
+#   save(metabolome_sample_info, file = "metabolome_sample_info")
+# }
 
 {
   load("stool_microbiome_expression_data")
@@ -340,7 +334,6 @@ edge_data$from_true_name =
 edge_data$to_true_name = 
   node_data$true_name[match(edge_data$to, node_data$node)]
 
-
 edge_data = 
   edge_data %>% 
   dplyr::mutate(significance = case_when(
@@ -349,18 +342,18 @@ edge_data =
   ))
 
 
-library(openxlsx)
-wb <- createWorkbook()
-modifyBaseFont(wb, fontSize = 12, fontName = "Time New Roma")
-addWorksheet(wb, sheetName = "Node data", gridLines = TRUE)
-addWorksheet(wb, sheetName = "Edge data", gridLines = TRUE)
-freezePane(wb, sheet = 1, firstRow = TRUE, firstCol = TRUE)
-freezePane(wb, sheet = 2, firstRow = TRUE, firstCol = TRUE)
-writeDataTable(wb, sheet = 1, x = node_data,
-               colNames = TRUE, rowNames = FALSE)
-writeDataTable(wb, sheet = 2, x = edge_data,
-               colNames = TRUE, rowNames = FALSE)
-saveWorkbook(wb = wb, file = "stool_microbiome_vs_metabolome.xlsx", overwrite = TRUE)
+# library(openxlsx)
+# wb <- createWorkbook()
+# modifyBaseFont(wb, fontSize = 12, fontName = "Time New Roma")
+# addWorksheet(wb, sheetName = "Node data", gridLines = TRUE)
+# addWorksheet(wb, sheetName = "Edge data", gridLines = TRUE)
+# freezePane(wb, sheet = 1, firstRow = TRUE, firstCol = TRUE)
+# freezePane(wb, sheet = 2, firstRow = TRUE, firstCol = TRUE)
+# writeDataTable(wb, sheet = 1, x = node_data,
+#                colNames = TRUE, rowNames = FALSE)
+# writeDataTable(wb, sheet = 2, x = edge_data,
+#                colNames = TRUE, rowNames = FALSE)
+# saveWorkbook(wb = wb, file = "stool_microbiome_vs_metabolome.xlsx", overwrite = TRUE)
 
 temp_data <- 
   tidygraph::tbl_graph(nodes = node_data, 
@@ -379,7 +372,7 @@ plot <-
   geom_edge_link(
     strength = 1,
     aes(
-      color = cor,
+      # color = cor,
       width = abs(cor),
       linetype = significance
     ),
@@ -418,12 +411,12 @@ plot <-
 
 plot
 
-extrafont::loadfonts()
-
-ggsave(plot,
-       filename = "stool_microbiome_metabolome_cor_plot_example.pdf",
-       width = 8.5,
-       height = 7)
+# extrafont::loadfonts()
+# 
+# ggsave(plot,
+#        filename = "stool_microbiome_metabolome_cor_plot_example.pdf",
+#        width = 8.5,
+#        height = 7)
 
 
 
