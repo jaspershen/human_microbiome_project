@@ -31,21 +31,21 @@ source("code/tools.R")
 ######work directory
 masstools::setwd_project()
 dir.create(
-  "data_analysis/correlation_network/whole_data_set_IR/stool_microbiome_vs_lipidome_IR_permutation"
+  "data_analysis/correlation_network/whole_data_set_IS/stool_microbiome_vs_lipidome_IS_permutation"
 )
 setwd(
-  "data_analysis/correlation_network/whole_data_set_IR/stool_microbiome_vs_lipidome_IR_permutation"
+  "data_analysis/correlation_network/whole_data_set_IS/stool_microbiome_vs_lipidome_IS_permutation"
 )
 
 ####load data
 {
-  load("../stool_microbiome_vs_lipidome_IR/stool_microbiome_expression_data")
-  load("../stool_microbiome_vs_lipidome_IR/stool_microbiome_variable_info")
-  load("../stool_microbiome_vs_lipidome_IR/stool_microbiome_sample_info")
+  load("../stool_microbiome_vs_lipidome_IS/stool_microbiome_expression_data")
+  load("../stool_microbiome_vs_lipidome_IS/stool_microbiome_variable_info")
+  load("../stool_microbiome_vs_lipidome_IS/stool_microbiome_sample_info")
   
-  load("../stool_microbiome_vs_lipidome_IR/lipidome_expression_data")
-  load("../stool_microbiome_vs_lipidome_IR/lipidome_variable_info")
-  load("../stool_microbiome_vs_lipidome_IR/lipidome_sample_info")
+  load("../stool_microbiome_vs_lipidome_IS/lipidome_expression_data")
+  load("../stool_microbiome_vs_lipidome_IS/lipidome_variable_info")
+  load("../stool_microbiome_vs_lipidome_IS/lipidome_sample_info")
 }
 
 dim(stool_microbiome_expression_data)
@@ -92,7 +92,7 @@ library(furrr)
 
 ###permutation
 
-for (i in 1:50) {
+for (i in 2:50) {
   cat(i, " ")
   idx <-
     sample(
@@ -112,9 +112,13 @@ for (i in 1:50) {
       threads = 8
     )
   
+  stool_microbiome_lipidome_lm_adjusted_cor_spearman <-
+    stool_microbiome_lipidome_lm_adjusted_cor[[1]]
+  
   cor_data =
     stool_microbiome_lipidome_lm_adjusted_cor_spearman %>%
     dplyr::filter(p_adjust < 0.2)
+  
   edge_data =
     cor_data %>%
     dplyr::mutate(p = -log(p_adjust, 10)) %>%
@@ -170,4 +174,6 @@ for (i in 1:50) {
       p_adjust >= 0.05 ~ "0.05<p.adj<0.2",
     ))
   
+  save(node_data, file = paste("node_data", i, sep = "_"))
+  save(edge_data, file = paste("edge_data", i, sep = "_"))
 }
