@@ -1,5 +1,5 @@
 #' ---
-#' title: "Stool microbiome lipidome correlation"
+#' title: "Stool microbiome metabolome correlation"
 #' author:
 #'   - name: "Xiaotao Shen"
 #'     url: https://www.shenxt.info/
@@ -31,28 +31,28 @@ source("code/tools.R")
 ######work directory
 masstools::setwd_project()
 dir.create(
-  "data_analysis/correlation_network/whole_data_set_IR/stool_microbiome_vs_lipidome_IR_permutation"
+  "data_analysis/correlation_network/whole_data_set_IR/stool_microbiome_vs_metabolome_IR_permutation"
 )
 setwd(
-  "data_analysis/correlation_network/whole_data_set_IR/stool_microbiome_vs_lipidome_IR_permutation"
+  "data_analysis/correlation_network/whole_data_set_IR/stool_microbiome_vs_metabolome_IR_permutation"
 )
 
 ####load data
 {
-  load("../stool_microbiome_vs_lipidome_IR/stool_microbiome_expression_data")
-  load("../stool_microbiome_vs_lipidome_IR/stool_microbiome_variable_info")
-  load("../stool_microbiome_vs_lipidome_IR/stool_microbiome_sample_info")
+  load("../stool_microbiome_vs_metabolome_IR/stool_microbiome_expression_data")
+  load("../stool_microbiome_vs_metabolome_IR/stool_microbiome_variable_info")
+  load("../stool_microbiome_vs_metabolome_IR/stool_microbiome_sample_info")
   
-  load("../stool_microbiome_vs_lipidome_IR/lipidome_expression_data")
-  load("../stool_microbiome_vs_lipidome_IR/lipidome_variable_info")
-  load("../stool_microbiome_vs_lipidome_IR/lipidome_sample_info")
+  load("../stool_microbiome_vs_metabolome_IR/metabolome_expression_data")
+  load("../stool_microbiome_vs_metabolome_IR/metabolome_variable_info")
+  load("../stool_microbiome_vs_metabolome_IR/metabolome_sample_info")
 }
 
 dim(stool_microbiome_expression_data)
-dim(lipidome_expression_data)
+dim(metabolome_expression_data)
 
 ######--------------------------------------------------------------------------
-##lipidome data have been preprocessed
+##metabolome data have been preprocessed
 library(plyr)
 
 ###because our microbiome are percentage data, so here we use the CTL method
@@ -70,10 +70,10 @@ stool_microbiome_expression_data =
 rownames(stool_microbiome_expression_data) = stool_microbiome_variable_info$variable_id
 
 #####
-dim(lipidome_expression_data)
+dim(metabolome_expression_data)
 dim(stool_microbiome_expression_data)
 
-stool_microbiome_sample_info$subject_id == lipidome_sample_info$subject_id
+stool_microbiome_sample_info$subject_id == metabolome_sample_info$subject_id
 
 ##https://rpubs.com/DKCH2020/578881
 ##https://ourcodingclub.github.io/tutorials/mixed-models/
@@ -82,17 +82,16 @@ stool_microbiome_sample_info$subject_id == lipidome_sample_info$subject_id
 
 ###step 1
 ###linear mixed model to adjust the subject ID random effect, and then use the partial correlation
-###to get the correlation between microbiome and lipidome
+###to get the correlation between microbiome and metabolome
 library(lme4)
 library(rmcorr)
 
 library(future)
 library(furrr)
 
-
 ###permutation
 
-for (i in 2:50) {
+for (i in 15:20) {
   cat(i, " ")
   idx <-
     sample(
@@ -103,20 +102,20 @@ for (i in 2:50) {
     unique() %>%
     sort()
   
-  stool_microbiome_lipidome_lm_adjusted_cor =
+  stool_microbiome_metabolome_lm_adjusted_cor =
     lm_adjusted_cor(
       data_set1 = stool_microbiome_expression_data[, idx],
-      data_set2 = lipidome_expression_data[, idx],
-      sample_info = stool_microbiome_sample_info[idx,],
+      data_set2 = metabolome_expression_data[, idx],
+      sample_info = stool_microbiome_sample_info[idx, ],
       method = "all",
       threads = 8
     )
   
-  stool_microbiome_lipidome_lm_adjusted_cor_spearman <-
-    stool_microbiome_lipidome_lm_adjusted_cor[[1]]
+  stool_microbiome_metabolome_lm_adjusted_cor_spearman <-
+    stool_microbiome_metabolome_lm_adjusted_cor[[1]]
   
   cor_data =
-    stool_microbiome_lipidome_lm_adjusted_cor_spearman %>%
+    stool_microbiome_metabolome_lm_adjusted_cor_spearman %>%
     dplyr::filter(p_adjust < 0.2)
   
   edge_data =
@@ -127,12 +126,12 @@ for (i in 2:50) {
                   to = metabolite,
                   cor = cor)
   
-  lipidome_variable_info$Lipid_Name[is.na(lipidome_variable_info$Lipid_Name)] =
-    lipidome_variable_info$variable_id[is.na(lipidome_variable_info$Lipid_Name)]
+  metabolome_variable_info$Lipid_Name[is.na(metabolome_variable_info$Lipid_Name)] =
+    metabolome_variable_info$variable_id[is.na(metabolome_variable_info$Lipid_Name)]
   
   node_data =
     data.frame(node = unique(c(edge_data$from, edge_data$to))) %>%
-    dplyr::left_join(lipidome_variable_info[, c("variable_id", "annotation")],
+    dplyr::left_join(metabolome_variable_info[, c("variable_id", "annotation")],
                      by = c("node" = "variable_id")) %>%
     dplyr::rename(true_name = annotation) %>%
     dplyr::mutate(class = case_when(
@@ -177,3 +176,14 @@ for (i in 2:50) {
   save(node_data, file = paste("node_data", i, sep = "_"))
   save(edge_data, file = paste("edge_data", i, sep = "_"))
 }
+
+
+# for (i in 1:12) {
+#   load(paste("edge_data", i, sep = "_"))
+#   cat(nrow(edge_data), " ")
+# }
+# 
+# for (i in 1:12) {
+#   load(paste("node_data", i, sep = "_"))
+#   cat(nrow(node_data), " ")
+# }

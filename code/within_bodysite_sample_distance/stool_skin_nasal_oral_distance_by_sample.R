@@ -20,7 +20,6 @@ physeq_nasal = physeq_NS
 
 dir.create("data_analysis/combine_microbiome/within_bodysite_sample_distance/",
            recursive = TRUE)
-
 setwd("data_analysis/combine_microbiome/within_bodysite_sample_distance/")
 
 # #####stool

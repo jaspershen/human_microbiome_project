@@ -368,7 +368,7 @@ sample_cor$class_name =
   unlist() %>%
   unname()
 
-write.csv(sample_cor, file = "sample_cor.csv", row.names = FALSE)
+# write.csv(sample_cor, file = "sample_cor.csv", row.names = FALSE)
 
 sample_wise_number <-
   purrr::map(as.data.frame(t(sample_cor)), function(x) {
@@ -614,8 +614,6 @@ plot <-
 plot
 # ggsave(plot, filename = "stool_phylum_distributation.pdf", width = 7, height = 7)
 
-
-
 ###skin
 dim(skin_variable_info)
 
@@ -649,11 +647,6 @@ plot <-
   theme_void()
 plot
 # ggsave(plot, filename = "skin_phylum_distributation.pdf", width = 7, height = 7)
-
-
-
-
-
 
 
 ###oral
@@ -1378,9 +1371,6 @@ between_plot
 # ggsave(plot = between_plot, filename = "between_plot.pdf", width = 11, height = 10.5)
 
 
-
-
-
 # #####high abundance geneara
 # stool_id = c("Bacteroides", "Prevotella", "Phocaeicola", "Unclassified_Ruminococcaceae")
 # load(here::here("data_analysis/stool_microbiome/data_preparation/variable_info"))
@@ -1400,3 +1390,4 @@ between_plot
 #
 # sample_cor %>%
 #   dplyr::filter(from %in% stool_id | to %in% stool_id)
+

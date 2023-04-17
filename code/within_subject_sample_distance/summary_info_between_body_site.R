@@ -117,10 +117,6 @@ plot
 #        width = 7,
 #        height = 7)
 
-
-
-
-
 ######stool with nasal
 intersect_name =
   intersect(stool_braydist_by_sample$name,
@@ -197,14 +193,12 @@ temp_data =
     subject_id = stool_braydist_by_sample$subject_id1[match(intersect_name, stool_braydist_by_sample$name)]
   )
 
-
 ###remove subjects with samples < 5
 remain_subject_id =
   temp_data %>%
   dplyr::count(subject_id) %>%
   dplyr::filter(n >= 10) %>%
   pull(subject_id)
-
 
 plot =
   temp_data %>%
@@ -287,10 +281,10 @@ plot =
   facet_wrap(facets = vars(subject_id), scales = "free") +
   theme(axis.text = element_text(size = 10))
 plot
-ggsave(plot,
-       filename = "skin_vs_nasal_sample_distance.pdf",
-       width = 7,
-       height = 7)
+# ggsave(plot,
+#        filename = "skin_vs_nasal_sample_distance.pdf",
+#        width = 7,
+#        height = 7)
 
 plot =
   temp_data %>%
@@ -306,10 +300,10 @@ plot =
   # facet_wrap(facets = vars(subject_id), scales = "free") +
   theme(axis.text = element_text(size = 10))
 plot
-ggsave(plot,
-       filename = "skin_vs_nasal_sample_distance_all.pdf",
-       width = 7,
-       height = 7)
+# ggsave(plot,
+#        filename = "skin_vs_nasal_sample_distance_all.pdf",
+#        width = 7,
+#        height = 7)
 
 
 ######skin with oral
@@ -348,10 +342,10 @@ plot =
   facet_wrap(facets = vars(subject_id), scales = "free") +
   theme(axis.text = element_text(size = 10))
 plot
-ggsave(plot,
-       filename = "skin_vs_oral_sample_distance.pdf",
-       width = 7,
-       height = 7)
+# ggsave(plot,
+#        filename = "skin_vs_oral_sample_distance.pdf",
+#        width = 7,
+#        height = 7)
 
 plot =
   temp_data %>%
@@ -367,10 +361,10 @@ plot =
   # facet_wrap(facets = vars(subject_id), scales = "free") +
   theme(axis.text = element_text(size = 10))
 plot
-ggsave(plot,
-       filename = "skin_vs_oral_sample_distance_all.pdf",
-       width = 7,
-       height = 7)
+# ggsave(plot,
+#        filename = "skin_vs_oral_sample_distance_all.pdf",
+#        width = 7,
+#        height = 7)
 
 
 
@@ -416,10 +410,10 @@ plot =
   facet_wrap(facets = vars(subject_id), scales = "free") +
   theme(axis.text = element_text(size = 10))
 plot
-ggsave(plot,
-       filename = "nasal_vs_oral_sample_distance.pdf",
-       width = 7,
-       height = 7)
+# ggsave(plot,
+#        filename = "nasal_vs_oral_sample_distance.pdf",
+#        width = 7,
+#        height = 7)
 
 plot =
   temp_data %>%
@@ -435,7 +429,7 @@ plot =
   # facet_wrap(facets = vars(subject_id), scales = "free") +
   theme(axis.text = element_text(size = 10))
 plot
-ggsave(plot,
-       filename = "nasal_vs_oral_sample_distance_all.pdf",
-       width = 7,
-       height = 7)
+# ggsave(plot,
+#        filename = "nasal_vs_oral_sample_distance_all.pdf",
+#        width = 7,
+#        height = 7)

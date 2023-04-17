@@ -31,21 +31,21 @@ source("code/tools.R")
 ######work directory
 masstools::setwd_project()
 dir.create(
-  "data_analysis/correlation_network/whole_data_set_IS/stool_microbiome_vs_lipidome_IS_permutation"
+  "data_analysis/correlation_network/whole_data_set_IR/stool_microbiome_vs_lipidome_IR_permutation"
 )
 setwd(
-  "data_analysis/correlation_network/whole_data_set_IS/stool_microbiome_vs_lipidome_IS_permutation"
+  "data_analysis/correlation_network/whole_data_set_IR/stool_microbiome_vs_lipidome_IR_permutation"
 )
 
 ####load data
 {
-  load("../stool_microbiome_vs_lipidome_IS/stool_microbiome_expression_data")
-  load("../stool_microbiome_vs_lipidome_IS/stool_microbiome_variable_info")
-  load("../stool_microbiome_vs_lipidome_IS/stool_microbiome_sample_info")
+  load("../stool_microbiome_vs_lipidome_IR/stool_microbiome_expression_data")
+  load("../stool_microbiome_vs_lipidome_IR/stool_microbiome_variable_info")
+  load("../stool_microbiome_vs_lipidome_IR/stool_microbiome_sample_info")
   
-  load("../stool_microbiome_vs_lipidome_IS/lipidome_expression_data")
-  load("../stool_microbiome_vs_lipidome_IS/lipidome_variable_info")
-  load("../stool_microbiome_vs_lipidome_IS/lipidome_sample_info")
+  load("../stool_microbiome_vs_lipidome_IR/lipidome_expression_data")
+  load("../stool_microbiome_vs_lipidome_IR/lipidome_variable_info")
+  load("../stool_microbiome_vs_lipidome_IR/lipidome_sample_info")
 }
 
 dim(stool_microbiome_expression_data)
@@ -89,10 +89,9 @@ library(rmcorr)
 library(future)
 library(furrr)
 
-
 ###permutation
 
-for (i in 2:50) {
+for (i in 8:14) {
   cat(i, " ")
   idx <-
     sample(
@@ -107,7 +106,7 @@ for (i in 2:50) {
     lm_adjusted_cor(
       data_set1 = stool_microbiome_expression_data[, idx],
       data_set2 = lipidome_expression_data[, idx],
-      sample_info = stool_microbiome_sample_info[idx,],
+      sample_info = stool_microbiome_sample_info[idx, ],
       method = "all",
       threads = 8
     )
@@ -177,3 +176,14 @@ for (i in 2:50) {
   save(node_data, file = paste("node_data", i, sep = "_"))
   save(edge_data, file = paste("edge_data", i, sep = "_"))
 }
+
+
+# for (i in 1:12) {
+#   load(paste("edge_data", i, sep = "_"))
+#   cat(nrow(edge_data), " ")
+# }
+# 
+# for (i in 1:12) {
+#   load(paste("node_data", i, sep = "_"))
+#   cat(nrow(node_data), " ")
+# }
