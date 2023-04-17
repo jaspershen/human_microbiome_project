@@ -1,5 +1,5 @@
 #' ---
-#' title: "oral microbiome oral_microbiome correlation"
+#' title: "oral microbiome nasal_microbiome correlation"
 #' author:
 #'   - name: "Xiaotao Shen"
 #'     url: https://www.shenxt.info/
@@ -32,30 +32,29 @@ for (i in 1:50) {
   cat(i, " ")
   load(
     paste0(
-      "data_analysis/correlation_network/whole_data_set/intra_oral_microbiome/permutation/intra_oral_microbiome_lm_adjusted_cor_",
+      "data_analysis/correlation_network/whole_data_set/intra_nasal_microbiome/permutation/intra_nasal_microbiome_lm_adjusted_cor_",
       i
     )
   )
   
-  oral_sample_cor <-
-    intra_oral_microbiome_lm_adjusted_cor
+  nasal_sample_cor <-
+    intra_nasal_microbiome_lm_adjusted_cor
   
   load(
-    "data_analysis/correlation_network/whole_data_set/intra_oral_microbiome/permutation/intra_oral_sample_wise_dim"
+    "data_analysis/correlation_network/whole_data_set/intra_nasal_microbiome/permutation/intra_nasal_sample_wise_dim"
   )
   
   #####sample wise
-  oral_sample_cor <-
-    oral_sample_cor %>%
+  nasal_sample_cor <-
+    nasal_sample_cor %>%
     dplyr::rename(from = microbiome, to = metabolite) %>%
-    dplyr::mutate(from_class = "oral", to_class = "oral") %>%
-    dplyr::mutate(from = paste("oral", from, sep = ""),
-                  to = paste("oral", to, sep = ""),
-    ) %>%
+    dplyr::mutate(from_class = "nasal", to_class = "nasal") %>%
+    dplyr::mutate(from = paste("nasal", from, sep = ""),
+                  to = paste("nasal", to, sep = ""),) %>%
     dplyr::select(-name)
   
   sample_cor <-
-    rbind(oral_sample_cor) %>%
+    rbind(nasal_sample_cor) %>%
     dplyr::filter(p_adjust < 0.05 * 0.005)
   
   name = apply(sample_cor, 1, function(x) {
@@ -86,8 +85,8 @@ for (i in 1:50) {
     dplyr::arrange(name) %>%
     dplyr::mutate(theoretical_n = NA)
   
-  sample_wise_number$theoretical_n[sample_wise_number$name == "oral_oral"] =
-    (intra_oral_sample_wise_dim[1] * (intra_oral_sample_wise_dim[1] - 1)) /
+  sample_wise_number$theoretical_n[sample_wise_number$name == "nasal_nasal"] =
+    (intra_nasal_sample_wise_dim[1] * (intra_nasal_sample_wise_dim[1] - 1)) /
     2
   
   sample_wise_number <-
@@ -124,19 +123,19 @@ for (i in 1:50) {
     )
   
   load(here::here(
-    "data_analysis/oral_microbiome/data_preparation/variable_info"
+    "data_analysis/nasal_microbiome/data_preparation/variable_info"
   ))
-  oral_variable_info = variable_info
+  nasal_variable_info = variable_info
   
   from <-
     sample_cor %>%
-    dplyr::filter(class_name == "oral_oral") %>%
+    dplyr::filter(class_name == "nasal_nasal") %>%
     pull(from) %>%
-    stringr::str_replace("oral", "") %>%
+    stringr::str_replace("nasal", "") %>%
     unique()
   
   temp <-
-    oral_variable_info %>%
+    nasal_variable_info %>%
     dplyr::filter(variable_id %in% from)
   
   temp <-

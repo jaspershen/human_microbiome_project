@@ -1,12 +1,12 @@
 #' ---
 #' title: "skin microbiome skin_microbiome correlation"
-#' author: 
-#'   - name: "Xiaotao Shen" 
+#' author:
+#'   - name: "Xiaotao Shen"
 #'     url: https://www.shenxt.info/
 #'     affiliation: Stanford School of Medicine
 #' date: "`r Sys.Date()`"
 #' site: distill::distill_website
-#' output: 
+#' output:
 #'   distill::distill_article:
 #'     code_folding: false
 #' ---
@@ -24,22 +24,32 @@ source("code/tools.R")
 
 ######work directory
 masstools::setwd_project()
-dir.create("data_analysis/correlation_network/whole_data_set/intra_skin_microbiome")
-setwd("data_analysis/correlation_network/whole_data_set/intra_skin_microbiome")
+dir.create(
+  "data_analysis/correlation_network/whole_data_set/intra_skin_microbiome/permutation"
+)
+setwd(
+  "data_analysis/correlation_network/whole_data_set/intra_skin_microbiome/permutation"
+)
 
 ###load data
 ###skin microbiome
 {
-  load(here::here("data_analysis/skin_microbiome/data_preparation/expression_data"))
-  load(here::here("data_analysis/skin_microbiome/data_preparation/sample_info"))
-  load(here::here("data_analysis/skin_microbiome/data_preparation/variable_info"))
+  load(here::here(
+    "data_analysis/skin_microbiome/data_preparation/expression_data"
+  ))
+  load(here::here(
+    "data_analysis/skin_microbiome/data_preparation/sample_info"
+  ))
+  load(here::here(
+    "data_analysis/skin_microbiome/data_preparation/variable_info"
+  ))
 }
 
 skin_microbiome_expression_data = expression_data
 skin_microbiome_sample_info = sample_info
 skin_microbiome_variable_info = variable_info
 
-##read genus table
+###read genus table
 expression_data =
   data.table::fread(here::here("data/from_xin/Genus Table/SK/Genus_SK.csv")) %>%
   as.data.frame() %>%
@@ -49,14 +59,15 @@ expression_data =
   as.data.frame()
 
 skin_microbiome_variable_info =
-  skin_microbiome_variable_info[match(rownames(expression_data), skin_microbiome_variable_info$Genus),]
+  skin_microbiome_variable_info[match(rownames(expression_data),
+                                      skin_microbiome_variable_info$Genus),]
 
 skin_microbiome_variable_info$Genus == rownames(expression_data)
 
 ###remove the variables which Genus are NA
 remove_idx = which(is.na(skin_microbiome_variable_info$Genus))
 remove_idx
-if(length(remove_idx) > 0){
+if (length(remove_idx) > 0) {
   skin_microbiome_variable_info = skin_microbiome_variable_info[-remove_idx,]
   expression_data = expression_data[-remove_idx,]
 }
@@ -94,18 +105,18 @@ skin_microbiome_sample_info =
   dplyr::filter(subject_id %in% remian_subject_id)
 
 skin_microbiome_expression_data =
-  skin_microbiome_expression_data[,skin_microbiome_sample_info$sample_id]
+  skin_microbiome_expression_data[, skin_microbiome_sample_info$sample_id]
 
 ##only remain the genus at least in 10% subjects
 remain_idx =
   which(rowSums(skin_microbiome_expression_data) > 0)
 
 skin_microbiome_expression_data = skin_microbiome_expression_data[remain_idx,]
-skin_microbiome_variable_info = skin_microbiome_variable_info[remain_idx,,drop = FALSE]
+skin_microbiome_variable_info = skin_microbiome_variable_info[remain_idx, , drop = FALSE]
 
 remain_idx =
   skin_microbiome_expression_data %>%
-  apply(1, function(x){
+  apply(1, function(x) {
     sum(as.numeric(x) == 0) / ncol(skin_microbiome_expression_data)
   }) %>%
   `<`(0.9) %>%
@@ -114,7 +125,7 @@ remain_idx =
 length(remain_idx)
 
 skin_microbiome_expression_data = skin_microbiome_expression_data[remain_idx,]
-skin_microbiome_variable_info = skin_microbiome_variable_info[remain_idx,,drop = FALSE]
+skin_microbiome_variable_info = skin_microbiome_variable_info[remain_idx, , drop = FALSE]
 
 ######--------------------------------------------------------------------------
 library(plyr)
@@ -128,14 +139,14 @@ dim(skin_microbiome_expression_data)
 ##https://www.linglab.cn/knowledge/10
 
 library(compositions)
-skin_microbiome_expression_data = 
-  skin_microbiome_expression_data %>% 
-  purrr::map(function(x){
-    x = compositions::clr(x) %>% 
+skin_microbiome_expression_data =
+  skin_microbiome_expression_data %>%
+  purrr::map(function(x) {
+    x = compositions::clr(x) %>%
       as.numeric()
     x
-  }) %>% 
-  do.call(cbind, .) %>% 
+  }) %>%
+  do.call(cbind, .) %>%
   as.data.frame()
 
 rownames(skin_microbiome_expression_data) = skin_microbiome_variable_info$variable_id
@@ -149,44 +160,51 @@ library(rmcorr)
 library(future)
 library(furrr)
 
-# intra_skin_microbiome_lm_adjusted_cor =
-#   lm_adjusted_cor(
-#     data_set1 = skin_microbiome_expression_data,
-#     data_set2 = skin_microbiome_expression_data,
-#     sample_info = skin_microbiome_sample_info,
-#     method = "all",
-#     threads = 8
-#   )
-# 
-# intra_skin_microbiome_lm_adjusted_cor =
-#   intra_skin_microbiome_lm_adjusted_cor[[1]]
-# 
-# ###remove duplicate correlation
-# name =
-#   intra_skin_microbiome_lm_adjusted_cor %>%
-#   apply(1, function(x) {
-#     paste(sort(as.character(x[c(1:2)])), collapse = "_")
-#   })
-# 
-# intra_skin_microbiome_lm_adjusted_cor =
-# intra_skin_microbiome_lm_adjusted_cor %>%
-#   dplyr::mutate(name = name) %>%
-#   dplyr::distinct(name, .keep_all = TRUE)
-# 
-# save(
-#   intra_skin_microbiome_lm_adjusted_cor,
-#   file = "intra_skin_microbiome_lm_adjusted_cor",
-#   compress = "xz"
-# )
+##permutation
+for (i in 1:20) {
+  cat(i, " ")
+  sample_idx <-
+    sample(
+      1:ncol(skin_microbiome_expression_data),
+      ncol(skin_microbiome_expression_data),
+      replace = TRUE
+    ) %>%
+    unique() %>%
+    sort()
+  intra_skin_microbiome_lm_adjusted_cor =
+    lm_adjusted_cor(
+      data_set1 = skin_microbiome_expression_data[, sample_idx],
+      data_set2 = skin_microbiome_expression_data[, sample_idx],
+      sample_info = skin_microbiome_sample_info[sample_idx, ],
+      method = "all",
+      threads = 8
+    )
+  
+  intra_skin_microbiome_lm_adjusted_cor =
+    intra_skin_microbiome_lm_adjusted_cor[[1]]
+  
+  ###remove duplicate correlation
+  name =
+    intra_skin_microbiome_lm_adjusted_cor %>%
+    apply(1, function(x) {
+      paste(sort(as.character(x[c(1:2)])), collapse = "_")
+    })
+  
+  intra_skin_microbiome_lm_adjusted_cor =
+    intra_skin_microbiome_lm_adjusted_cor %>%
+    dplyr::mutate(name = name) %>%
+    dplyr::distinct(name, .keep_all = TRUE)
+  
+  save(
+    intra_skin_microbiome_lm_adjusted_cor,
+    file = paste0("intra_skin_microbiome_lm_adjusted_cor_", i),
+    compress = "xz"
+  )
+  
+}
 
-load("intra_skin_microbiome_lm_adjusted_cor")
+intra_skin_sample_wise_dim =
+  nrow(skin_microbiome_expression_data)
 
-
-intra_skin_sample_wise_dim = 
-  dim(skin_microbiome_expression_data)
-
-save(intra_skin_sample_wise_dim, file = "intra_skin_sample_wise_dim")
-
-
-###here we use the lm_adjusted_cor
-sum(intra_skin_microbiome_lm_adjusted_cor$p_adjust < 0.2)
+save(intra_skin_sample_wise_dim,
+     file = "intra_skin_sample_wise_dim")
