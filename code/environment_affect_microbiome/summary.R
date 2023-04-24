@@ -1,7 +1,7 @@
 no_source()
 
 # set work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 library(phyloseq)
 rm(list = ls())
@@ -33,7 +33,7 @@ source("code/tools.R")
 }
 
 ####plot to show
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/environment_affect_microbiome")
 
 library(ggpubr)
@@ -89,7 +89,7 @@ plot
 no_source()
 
 # set work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 library(phyloseq)
 rm(list = ls())
@@ -121,7 +121,7 @@ source("code/tools.R")
 }
 
 ####plot to show
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/environment_affect_microbiome")
 
 library(ggpubr)

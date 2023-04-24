@@ -3,7 +3,7 @@
 no_source()
 
 # set work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 library(phyloseq)
 rm(list = ls())
@@ -243,7 +243,7 @@ stool_microbiome_variable_info =
   stool_microbiome_variable_info[remain_idx, ]
 
 #####set work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/pcva_analysis")
 
 dim(oral_microbiome_expression_data)

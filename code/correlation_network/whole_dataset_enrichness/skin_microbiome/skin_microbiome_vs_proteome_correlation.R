@@ -15,14 +15,14 @@
 
 no_function()
 # set work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 rm(list = ls())
 
 source("code/tools.R")
 
 ######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 load("data/from_xin/Richness_Bygenus.RData")
 load("data_analysis/skin_microbiome/data_preparation/sample_info")
 setwd("data_analysis/correlation_network/whole_data_set_enrichness/skin_microbiome_vs_proteome")

@@ -16,7 +16,7 @@
 no_function()
 # set work directory
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 library(ggraph)
 library(igraph)
@@ -29,7 +29,7 @@ rm(list = ls())
 source("code/tools.R")
 
 ######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 
 data_IR <-
   purrr::map(1:20, function(i) {

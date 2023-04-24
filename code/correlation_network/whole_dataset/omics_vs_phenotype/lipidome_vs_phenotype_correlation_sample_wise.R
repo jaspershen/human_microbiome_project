@@ -16,7 +16,7 @@
 no_function()
 # set work directory
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 rm(list = ls())
 
@@ -27,7 +27,7 @@ stool_microbiome_sample_info <-
   sample_info
 
 ######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 dir.create("data_analysis/correlation_network/whole_data_set/lipidome_vs_phenotype_sample_wise")
 setwd("data_analysis/correlation_network/whole_data_set/lipidome_vs_phenotype_sample_wise")
 # 

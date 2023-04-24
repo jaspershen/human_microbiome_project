@@ -71,7 +71,7 @@ list.of.packages <- c("tidyverse", "skimr", "brms")
 ##/Users/xiaotaoshen/Box/Xiaotao Shen's Files/human_microbiome_project/data_analysis/brms/nasal/result
 
 ####next code are in local PC
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/brms/nasal/result/")
 rm(list = ls())
 
@@ -86,7 +86,7 @@ final_table =
 
 ####output result
 library(openxlsx)
-openxlsx::write.xlsx(final_table, "nasal_cytokine_result.xlsx", asTable = TRUE, overwrite = TRUE)
+# openxlsx::write.xlsx(final_table, "nasal_cytokine_result.xlsx", asTable = TRUE, overwrite = TRUE)
 
 head(final_table)
 
@@ -172,13 +172,12 @@ plot =
   )
 
 plot = ggplotify::as.ggplot(plot)
-# plot
+plot
 
-ggsave(plot,
-       filename = "brms_nasal_microbiome_vs_cytokine.pdf",
-       width = 14,
-       height = 7)
-
+# ggsave(plot,
+#        filename = "brms_nasal_microbiome_vs_cytokine.pdf",
+#        width = 14,
+#        height = 7)
 
 result1 <- 
   final_table1 %>% 
@@ -198,11 +197,11 @@ result =
 result <- 
   data.frame(result, class = "Nasal")
 
-openxlsx::write.xlsx(
-  result,
-  "nasal_cytokine_beta.xlsx",
-  asTable = TRUE,
-  overwrite = TRUE
-)
+# openxlsx::write.xlsx(
+#   result,
+#   "nasal_cytokine_beta.xlsx",
+#   asTable = TRUE,
+#   overwrite = TRUE
+# )
 
 

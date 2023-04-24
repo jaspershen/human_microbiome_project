@@ -1,7 +1,7 @@
 ###
 no_function()
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 library(phyloseq)
 rm(list = ls())
@@ -226,7 +226,7 @@ plot =
   ) +
   scale_colour_manual(values = body_site_color)
 plot
-ggsave(plot, filename = "4_body_site_ovrelap.pdf", width = 9, height = 7)
+# ggsave(plot, filename = "4_body_site_ovrelap.pdf", width = 9, height = 7)
 
 ####HMP
 physeqGenus_ST
@@ -705,10 +705,15 @@ p3 =
 
 p3
 
-ggsave(p3,
-       filename = "fc1_cladogram.pdf",
-       width = 14,
-       height = 14)
+# ggsave(p3,
+#        filename = "fc1_cladogram.pdf",
+#        width = 14,
+#        height = 14)
+
+# ggsave(p3,
+#        filename = "fc1_cladogram.small.pdf",
+#        width = 10,
+#        height = 5)
 
 ###output results
 temp_data =
@@ -718,10 +723,10 @@ temp_data =
   temp_data %>%
   dplyr::filter(isTip)
 
-openxlsx::write.xlsx(temp_data,
-                     file = "fc1_tree_data.xlsx",
-                     asTable = TRUE,
-                     overwrite = TRUE)
+# openxlsx::write.xlsx(temp_data,
+#                      file = "fc1_tree_data.xlsx",
+#                      asTable = TRUE,
+#                      overwrite = TRUE)
 
 #####summary information
 plot <-
@@ -738,14 +743,20 @@ plot <-
   scale_fill_manual(values = c(body_site_color, "no" = "white")) +
   guides(size = guide_legend(title = "-log10(p-adjust)")) +
   base_theme +
-  labs(x = "", y = "Personized score")
+  labs(x = "", y = "Personized score") + 
+  theme(text = element_text(size = 20))
 
 plot
 
+# ggsave(plot,
+#        filename = "Personized_score_boxplot.pdf",
+#        width = 10,
+#        height = 7)
+
 ggsave(plot,
-       filename = "Personized_score_boxplot.pdf",
-       width = 10,
-       height = 7)
+       filename = "Personized_score_boxplot_small.pdf",
+       width = 6,
+       height = 4, dpi=300)
 
 temp <-
   personalized_score %>%
@@ -883,10 +894,10 @@ plot =
 
 plot
 
-ggsave(plot,
-       filename = "Personized_score_boxplot_based_on_phylum.pdf",
-       width = 16,
-       height = 10)
+# ggsave(plot,
+#        filename = "Personized_score_boxplot_based_on_phylum.pdf",
+#        width = 16,
+#        height = 10)
 
 
 temp_data <-
@@ -949,10 +960,10 @@ plot =
 
 plot
 
-ggsave(plot,
-       filename = "Personized_score_boxplot_based_on_body_site.pdf",
-       width = 10,
-       height = 4)
+# ggsave(plot,
+#        filename = "Personized_score_boxplot_based_on_body_site.pdf",
+#        width = 10,
+#        height = 4)
 
 
 temp_data <-
@@ -968,4 +979,4 @@ temp_data <-
   )) %>%
   dplyr::rename(dmi = fc1)
 
-write.csv(temp_data, "dmi_based_on_phylum.csv", row.names = FALSE)
+# write.csv(temp_data, "dmi_based_on_phylum.csv", row.names = FALSE)

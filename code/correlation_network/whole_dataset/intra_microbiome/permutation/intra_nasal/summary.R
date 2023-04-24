@@ -16,19 +16,19 @@
 no_function()
 # set work directory
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 rm(list = ls())
 
 source("code/tools.R")
 
 ######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 
-edge_percentage_ratio <- vector(mode = "list", length = 50)
-phylum_percentage_ratio <- vector(mode = "list", length = 50)
+edge_percentage_ratio <- vector(mode = "list", length = 20)
+phylum_percentage_ratio <- vector(mode = "list", length = 20)
 
-for (i in 1:50) {
+for (i in 1:20) {
   cat(i, " ")
   load(
     paste0(
@@ -50,7 +50,8 @@ for (i in 1:50) {
     dplyr::rename(from = microbiome, to = metabolite) %>%
     dplyr::mutate(from_class = "nasal", to_class = "nasal") %>%
     dplyr::mutate(from = paste("nasal", from, sep = ""),
-                  to = paste("nasal", to, sep = ""),) %>%
+                  to = paste("nasal", to, sep = ""),
+    ) %>%
     dplyr::select(-name)
   
   sample_cor <-

@@ -1,7 +1,7 @@
 ##avoid source
 no_function()
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 setwd("data_analysis/exposome_biological/")
 rm(list = ls())

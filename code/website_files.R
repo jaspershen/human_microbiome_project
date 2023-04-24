@@ -1,5 +1,5 @@
 # distill::create_website(dir = "website_files/", gh_pages = TRUE)
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 ##render websites
 rmarkdown::render_site(input = "website_files/")
 ##copy website docs to root folder

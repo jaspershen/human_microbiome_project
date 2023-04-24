@@ -1,7 +1,7 @@
 no_source()
 
 # set work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 library(phyloseq)
 rm(list = ls())
@@ -32,7 +32,7 @@ source("code/tools.R")
 }
 
 ####plot to show
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 dir.create("data_analysis/season_analysis/permutation_test")
 setwd("data_analysis/season_analysis/permutation_test")
 library(scatterpie)

@@ -1,7 +1,7 @@
 no_source()
 
 # set work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 library(phyloseq)
 rm(list = ls())
@@ -102,7 +102,7 @@ sum(oral_p_value_all < 0.05) / length(oral_remain_idx)
 sum(oral_p_value_adj_all < 0.05) / length(oral_remain_idx)
 
 ####plot to show
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/season_analysis/")
 library(scatterpie)
 

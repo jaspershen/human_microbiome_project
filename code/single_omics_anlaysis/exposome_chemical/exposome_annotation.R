@@ -1,4 +1,4 @@
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_20200511/exposome/")
 library(tidyverse)
 rm(list=ls())

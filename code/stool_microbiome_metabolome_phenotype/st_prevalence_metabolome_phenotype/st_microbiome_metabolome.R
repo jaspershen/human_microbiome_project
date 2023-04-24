@@ -16,7 +16,7 @@
 no_function()
 # set work directory
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 rm(list = ls())
 
@@ -88,7 +88,7 @@ colnames(metabolome_expression_data)
 length(unique(metabolome_sample_info$subject_id))
 
 #######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/st_microbiome_metabolome")
 
 plot = 

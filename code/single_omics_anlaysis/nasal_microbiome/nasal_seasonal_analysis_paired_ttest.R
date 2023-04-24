@@ -4,7 +4,7 @@
 no_source()
 
 # set work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 library(phyloseq)
 rm(list = ls())
@@ -45,7 +45,7 @@ source("code/tools.R")
 }
 
 #######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/nasal_microbiome/season_analysis")
 
 zero_percent =

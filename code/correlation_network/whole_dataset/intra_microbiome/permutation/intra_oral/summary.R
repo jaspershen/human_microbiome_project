@@ -16,17 +16,17 @@
 no_function()
 # set work directory
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 rm(list = ls())
 
 source("code/tools.R")
 
 ######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 
-edge_percentage_ratio <- vector(mode = "list", length = 50)
-phylum_percentage_ratio <- vector(mode = "list", length = 50)
+edge_percentage_ratio <- vector(mode = "list", length = 20)
+phylum_percentage_ratio <- vector(mode = "list", length = 20)
 
 for (i in 1:20) {
   cat(i, " ")
@@ -55,7 +55,7 @@ for (i in 1:20) {
   
   sample_cor <-
     rbind(oral_sample_cor) %>%
-    dplyr::filter(p_adjust < 0.05 * 1)
+    dplyr::filter(p_adjust < 0.05 / 0.63)
   
   name = apply(sample_cor, 1, function(x) {
     paste(sort(as.character(x[1:2])), collapse = "_")

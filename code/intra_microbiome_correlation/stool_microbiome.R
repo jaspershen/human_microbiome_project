@@ -16,7 +16,7 @@
 no_function()
 # set work directory
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 rm(list = ls())
 
@@ -59,7 +59,7 @@ length(unique(stool_microbiome_sample_info$subject_id))
 dim(stool_microbiome_variable_info)
 
 ######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/intra_microbiome_correlation/stool_microbiome")
 
 ###only remain the subjects with at least >= 5

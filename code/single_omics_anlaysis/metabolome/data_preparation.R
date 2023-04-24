@@ -1,7 +1,7 @@
 ###
 no_function()
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 rm(list = ls())
 ####load raw data
@@ -59,7 +59,7 @@ expression_data =
 rownames(expression_data) == variable_info$variable_id
 colnames(expression_data) == sample_info$sample_id
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/metabolome/data_preparation/")
 
 variable_info =

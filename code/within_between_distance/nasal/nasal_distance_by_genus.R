@@ -1,5 +1,5 @@
 ###no source
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 rm(list = ls())
 library(tidyverse)
 
@@ -437,7 +437,7 @@ head(nasal_braydist_by_genus)
 table(nasal_braydist_by_genus$subject_id1)
 
 ####if the diff days affect the within and between distance
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/combine_microbiome/distance/nasal/")
 
 all_genus = nasal_braydist_by_genus$genus %>%

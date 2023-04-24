@@ -3,7 +3,7 @@
 no_source()
 
 # set work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 library(phyloseq)
 rm(list = ls())
@@ -201,7 +201,7 @@ variable_info <-
 rownames(temp_data) == variable_info$variable_id
 
 #######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 dir.create("data_analysis/combine_microbiome/clustering/phylum",
            recursive = TRUE)
 setwd("data_analysis/combine_microbiome/clustering/phylum")

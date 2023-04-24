@@ -1,7 +1,7 @@
 ###
 no_function()
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 library(phyloseq)
 rm(list = ls())
@@ -36,7 +36,7 @@ variable_info$variable_id = rownames(expression_data)
 
 sample_info$SampleType %>% unique()
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/ns_metabolome/data_preparation/")
 
 sample_info = 

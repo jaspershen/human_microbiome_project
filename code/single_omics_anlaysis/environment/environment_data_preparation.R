@@ -2,12 +2,12 @@
 no_function()
 
 ##
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 load("data/")
 dna_sample_info <- dna_sample_info[, 1:16]
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_20200511/environment/")
 
 sample_info <-

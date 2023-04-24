@@ -16,14 +16,14 @@
 no_function()
 # set work directory
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 rm(list = ls())
 
 source("code/tools.R")
 
 ######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 dir.create(
   "data_analysis/correlation_network/whole_data_set/intra_nasal_microbiome/permutation"
 )
@@ -163,7 +163,7 @@ library(future)
 library(furrr)
 
 ##permutation
-for (i in 1:50) {
+for (i in 1:20) {
   cat(i, " ")
   sample_idx <-
     sample(

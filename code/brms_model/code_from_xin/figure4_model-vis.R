@@ -2,7 +2,7 @@ library(tidyverse)
 library(tidybayes)
 library(ggridges)
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/brms/")
 
 load("model-output.RData")

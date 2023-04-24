@@ -71,7 +71,7 @@ list.of.packages <- c("tidyverse", "skimr", "brms")
 ##/Users/xiaotaoshen/Box/Xiaotao Shen's Files/human_microbiome_project/data_analysis/brms/stool/result
 
 ####next code are in local PC
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/brms/stool/result/")
 rm(list = ls())
 

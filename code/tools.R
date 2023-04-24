@@ -1,3 +1,5 @@
+library(tidyverse)
+
 iris_color = 
   c("IR" = ggsci::pal_nejm()(n=10)[2],
     "IS" = ggsci::pal_nejm()(n=10)[1]) 

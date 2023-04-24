@@ -16,7 +16,7 @@
 no_function()
 # set work directory
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 rm(list = ls())
 source("code/tools.R")
@@ -93,7 +93,7 @@ ggplot(data = pd, aes(x = dt, y = value)) +
 
 plot
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/ICC")
 plot
 # ggsave(plot, filename = "icc_of_different_body_site_microbiome_asv.pdf", width = 9, height = 7)

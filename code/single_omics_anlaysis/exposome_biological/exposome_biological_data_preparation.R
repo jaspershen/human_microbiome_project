@@ -2,7 +2,7 @@
 no_function()
 
 ##CPM
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 setwd("data_20200511/microbiome/")
 rm(list = ls())

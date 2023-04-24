@@ -16,14 +16,14 @@
 no_function()
 # set work directory
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 rm(list = ls())
 
 source("code/tools.R")
 
 ######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 dir.create("data_analysis/correlation_network/whole_data_set_IS/skin_microbiome_vs_cytokine")
 setwd("data_analysis/correlation_network/whole_data_set_IS/skin_microbiome_vs_cytokine")
 

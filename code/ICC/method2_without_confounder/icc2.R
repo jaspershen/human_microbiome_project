@@ -16,7 +16,7 @@
 no_function()
 # set work directory
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 rm(list = ls())
 source("code/tools.R")
@@ -92,7 +92,7 @@ ggplot(data = pd, aes(x = dt, y = value)) +
   )
 plot
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 dir.create("data_analysis/ICC_without_confounder")
 setwd("data_analysis/ICC_without_confounder")
 plot

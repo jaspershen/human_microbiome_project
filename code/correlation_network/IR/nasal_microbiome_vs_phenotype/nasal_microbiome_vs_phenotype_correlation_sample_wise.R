@@ -23,7 +23,7 @@ rm(list = ls())
 source("code/tools.R")
 
 ######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 dir.create("data_analysis/correlation_network/IR/nasal_microbiome_vs_phenotype_sample_wise")
 setwd("data_analysis/correlation_network/IR/nasal_microbiome_vs_phenotype_sample_wise")
 

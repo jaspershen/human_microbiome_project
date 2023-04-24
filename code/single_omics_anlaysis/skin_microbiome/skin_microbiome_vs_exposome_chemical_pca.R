@@ -54,7 +54,7 @@ no_source()
 # MOFAobject.trained <- run_mofa(MOFAobject, outfile)
 
 # set work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 library(phyloseq)
 rm(list = ls())
@@ -147,7 +147,7 @@ source("code/tools.R")
 
 
 #######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/skin_microbiome/skin_microbiome_exposome_chemical")
 
 #####just use the pca to do dimension reduction for microbiome

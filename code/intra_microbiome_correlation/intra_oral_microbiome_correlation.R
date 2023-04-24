@@ -16,7 +16,7 @@
 no_function()
 # set work directory
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 rm(list = ls())
 
@@ -56,7 +56,7 @@ sum(colnames(oral_microbiome_expression_data) == oral_microbiome_sample_info$sam
 dim(oral_microbiome_sample_info)
 
 #######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/intra_microbiome_correlation")
 
 ##only remain the genus at least in 10% subjects

@@ -1,6 +1,6 @@
 ##avoid source
 no_exist_function()
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 rm(list = ls())
 
 source("R/20200511/tools.R")

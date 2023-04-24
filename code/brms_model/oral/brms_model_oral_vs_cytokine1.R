@@ -13,7 +13,7 @@ list.of.packages <- c("tidyverse", "skimr", "brms")
 library(tidyverse)
 library(skimr)
 library(brms)
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 source("code/tools.R")
 
 ###load data

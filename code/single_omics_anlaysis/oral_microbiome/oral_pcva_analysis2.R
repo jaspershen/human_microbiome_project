@@ -2,7 +2,7 @@
 no_source()
 
 # set work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 library(tidyverse)
 library(phyloseq)
 rm(lins = ls())
@@ -54,7 +54,7 @@ oral_microbiome_sample_info =
 }
 
 #######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/oral_microbiome/PVCA_analysis/")
 
 zero_percent =
@@ -187,7 +187,7 @@ ggsave(plot, filename = "pvca_plot_asv.pdf", height = 7, width = 7)
 }
 
 #######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/oral_microbiome/PVCA_analysis/")
 
 zero_percent =
@@ -268,7 +268,7 @@ ggsave(plot, filename = "pvca_plot_phylum.pdf", height = 7, width = 7)
 }
 
 #######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/oral_microbiome/PVCA_analysis/")
 
 zero_percent =
@@ -344,7 +344,7 @@ ggsave(plot, filename = "pvca_plot_class.pdf", height = 7, width = 7)
 }
 
 #######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/oral_microbiome/PVCA_analysis/")
 
 zero_percent =
@@ -420,7 +420,7 @@ ggsave(plot, filename = "pvca_plot_family.pdf", height = 7, width = 7)
 }
 
 #######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/oral_microbiome/PVCA_analysis/")
 
 zero_percent =
@@ -495,7 +495,7 @@ ggsave(plot, filename = "pvca_plot_genus.pdf", height = 7, width = 7)
 }
 
 #######work directory
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/oral_microbiome/PVCA_analysis/")
 
 zero_percent =

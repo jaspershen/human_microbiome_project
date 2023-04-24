@@ -6,7 +6,7 @@
 # JJ Create a single dataset containing either IL17A, IL17F, or IL22, plus metadata 
 
 library(tidyverse)
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("code/brms_model/03.CytokineMicrobiomeModel/02_JJ_Pipeline/Figure4/src/")
 ## Read in the data --------------------------------------------------------
 

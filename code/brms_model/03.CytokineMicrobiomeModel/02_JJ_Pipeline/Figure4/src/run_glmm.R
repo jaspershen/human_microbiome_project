@@ -16,7 +16,7 @@ suppressMessages(library('broom'))
 # 5) output file name
 # 6) file in which to store full brm model
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("code/brms_model/03.CytokineMicrobiomeModel/02_JJ_Pipeline/Figure4/src/")
 
 args <- commandArgs(TRUE)

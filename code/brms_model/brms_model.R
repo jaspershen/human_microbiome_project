@@ -20,7 +20,7 @@ install.load::install_load(list.of.packages)
 ##subtracting half of the smallest observed value, as described previously.
 
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/brms/")
 rm(list = ls())
 

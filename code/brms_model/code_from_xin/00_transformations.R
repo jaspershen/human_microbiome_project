@@ -10,7 +10,7 @@ list.of.packages <- c("tidyverse", "skimr", "broom")
 
 install.load::install_load(list.of.packages)
 
-masstools::setwd_project()
+setwd(masstools::get_project_wd())
 setwd("data_analysis/brms/")
 load("model-df.Rdata")
 
