@@ -115,10 +115,10 @@ batch.factors <-
   c("subject_id", #yes
     "days")
 
-pvcaObj <- pvcaBatchAssess(abatch = data_pvca,
-                           batch.factors = batch.factors,
-                           threshold = pct_threshold)
-
+# pvcaObj <- pvcaBatchAssess(abatch = data_pvca,
+#                            batch.factors = batch.factors,
+#                            threshold = pct_threshold)
+# 
 # save(pvcaObj, file = "pvcaObj")
 load("pvcaObj")
 
@@ -143,15 +143,15 @@ meta =
   meta %>%
   tibble::column_to_rownames(var = "sample_id")
 
-pvca_object <-
-  PVCA(
-    counts = counts,
-    meta = meta,
-    threshold = 0.6,
-    inter = FALSE
-  )
-
-pvca_object
+# pvca_object <-
+#   PVCA(
+#     counts = counts,
+#     meta = meta,
+#     threshold = 0.6,
+#     inter = FALSE
+#   )
+# 
+# pvca_object
 # save(pvca_object, file = "pvca_object")
 load("pvca_object")
 plot <-

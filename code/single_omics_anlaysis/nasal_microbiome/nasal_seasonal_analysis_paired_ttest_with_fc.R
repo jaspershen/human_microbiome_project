@@ -79,10 +79,14 @@ library(mgcv)
 library(gratia)
 library(pvca)
 
+# temp_data <-
+#   apply(ns_microbiome_expression_data, 1, function(x) {
+#     (x - mean(x)) / sd(x)
+#   })
+
 temp_data <-
-  apply(ns_microbiome_expression_data, 1, function(x) {
-    (x - mean(x)) / sd(x)
-  })
+  ns_microbiome_expression_data %>% 
+  t()
 
 rownames(temp_data) == ns_microbiome_sample_info$sample_id
 
@@ -103,14 +107,25 @@ all_p_values <-
     test <-
       wilcox.test(temp_data[summer_idx, i],
                   temp_data[winter_idx, i])
-    test$p.value
-  })
+    data.frame(p = test$p.value, 
+               winter_mean = mean(temp_data[winter_idx, i], na.rm = TRUE),
+               summer_mean = mean(temp_data[summer_idx, i], na.rm = TRUE),
+               winter_summer = mean(temp_data[winter_idx, i], na.rm = TRUE) - mean(temp_data[summer_idx, i], na.rm = TRUE),
+               fc = mean(temp_data[winter_idx, i], na.rm = TRUE)/mean(temp_data[summer_idx, i], na.rm = TRUE))
+    
+  }) %>% 
+  do.call(rbind, .) %>% 
+  as.data.frame()
 
 season_p_value <-
   data.frame(
     variable_id = colnames(temp_data),
-    p_value = unlist(all_p_values),
-    fdr = p.adjust(unlist(all_p_values), method = "fdr")
+    p_value = all_p_values$p,
+    fdr = p.adjust(all_p_values$p, method = "fdr"),
+    fc = all_p_values$fc,
+    winter_mean = all_p_values$winter_mean,
+    summer_mean = all_p_values$summer_mean,
+    winter_summer = all_p_values$winter_summer
   )
 
 save(season_p_value, file = "season_p_value")

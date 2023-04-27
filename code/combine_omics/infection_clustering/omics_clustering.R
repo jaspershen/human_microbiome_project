@@ -305,8 +305,6 @@ variable_info_stool <-
 rownames(temp_data_stool) <-
   variable_info_stool$variable_id
 
-
-
 temp_data <-
   rbind(
     temp_data_nasal,
