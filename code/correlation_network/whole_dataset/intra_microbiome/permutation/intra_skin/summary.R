@@ -38,7 +38,8 @@ for (i in 1:20) {
   )
   
   skin_sample_cor <-
-    intra_skin_microbiome_lm_adjusted_cor
+    intra_skin_microbiome_lm_adjusted_cor %>% 
+    dplyr::filter(microbiome != metabolite)
   
   load(
     "data_analysis/correlation_network/whole_data_set/intra_skin_microbiome/permutation/intra_skin_sample_wise_dim"

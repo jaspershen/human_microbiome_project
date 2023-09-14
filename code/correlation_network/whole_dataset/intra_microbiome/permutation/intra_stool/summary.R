@@ -38,7 +38,8 @@ for (i in 1:20) {
   )
   
   stool_sample_cor <-
-    intra_stool_microbiome_lm_adjusted_cor
+    intra_stool_microbiome_lm_adjusted_cor %>% 
+    dplyr::filter(microbiome != metabolite)
   
   load(
     "data_analysis/correlation_network/whole_data_set/intra_stool_microbiome/permutation/intra_stool_sample_wise_dim"
@@ -56,7 +57,7 @@ for (i in 1:20) {
   
   sample_cor <-
     rbind(stool_sample_cor) %>%
-    dplyr::filter(p_adjust < 0.05 / 0.63)
+    dplyr::filter(p_adjust < 0.05 / 0.5)
   
   name = apply(sample_cor, 1, function(x) {
     paste(sort(as.character(x[1:2])), collapse = "_")

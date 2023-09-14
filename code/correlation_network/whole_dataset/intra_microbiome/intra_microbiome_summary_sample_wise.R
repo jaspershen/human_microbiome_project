@@ -361,6 +361,10 @@ load("sample_cor")
 sum(sample_cor$from_class == sample_cor$to_class)
 sum(sample_cor$from_class != sample_cor$to_class)
 
+sample_cor <-
+  sample_cor %>%
+  dplyr::filter(from != to)
+
 sample_cor$class_name =
   purrr::map(as.data.frame(t(sample_cor)), function(x) {
     paste(sort(as.character(x)[7:8]), collapse = "_")
@@ -1391,3 +1395,180 @@ between_plot
 # sample_cor %>%
 #   dplyr::filter(from %in% stool_id | to %in% stool_id)
 
+
+####output results
+sample_cor_output <-
+  sample_cor %>%
+  dplyr::filter(from != to)
+
+
+new_stool_variable_info <-
+  stool_variable_info %>%
+  dplyr::mutate(variable_id = paste0("stool", variable_id),
+                class = "stool")
+
+new_skin_variable_info <-
+  skin_variable_info %>%
+  dplyr::mutate(variable_id = paste0("skin", variable_id),
+                class = "skin")
+
+new_oral_variable_info <-
+  oral_variable_info %>%
+  dplyr::mutate(variable_id = paste0("oral", variable_id),
+                class = "oral")
+
+new_nasal_variable_info <-
+  nasal_variable_info %>%
+  dplyr::mutate(variable_id = paste0("nasal", variable_id),
+                class = "nasal")
+
+
+new_variable_info <-
+  rbind(
+    new_stool_variable_info,
+    new_skin_variable_info,
+    new_oral_variable_info,
+    new_nasal_variable_info
+  )
+
+sample_cor_output <-
+  sample_cor_output %>%
+  dplyr::left_join(new_variable_info %>% dplyr::select(-class),
+                   by = c("from" = "variable_id")) %>%
+  dplyr::rename(
+    from_Kingdom = Kingdom,
+    from_Phylum = Phylum,
+    from_Class = Class,
+    from_Order = Order,
+    from_Family = Family,
+    from_Genus = Genus,
+    from_Species = Species
+  ) %>%
+  dplyr::left_join(new_variable_info %>% dplyr::select(-class),
+                   by = c("to" = "variable_id")) %>%
+  dplyr::rename(
+    to_Kingdom = Kingdom,
+    to_Phylum = Phylum,
+    to_Class = Class,
+    to_Order = Order,
+    to_Family = Family,
+    to_Genus = Genus,
+    to_Species = Species
+  )
+
+sample_cor_output <-
+  sample_cor_output %>%
+  dplyr::select(-p_adjust2)
+
+
+inter <-
+  sample_cor_output %>%
+  dplyr::filter(from_class != to_class)
+
+intra <-
+  sample_cor_output %>%
+  dplyr::filter(from_class == to_class)
+
+# write.csv(sample_cor_output, file = "sample_cor_output.csv", row.names = FALSE)
+
+
+# write.csv(inter, file = "inter.csv", row.names = FALSE)
+# write.csv(intra, file = "intra.csv", row.names = FALSE)
+
+
+library(ggplot2)
+
+plot_intra_density <-
+  intra %>%
+  dplyr::mutate(class = stringr::str_to_sentence(from_class)) %>%
+  ggplot(aes(x = abs(cor))) +
+  geom_density(aes(color = class)) +
+  theme_bw() +
+  scale_color_manual(values = body_site_color) +
+  labs(x = "Absolute Spearman Correlation",
+       y = "Density")
+
+ggsave(
+  plot_intra_density,
+  filename = "plot_intra_density.pdf",
+  width = 9,
+  height = 7
+)
+
+ggsave(
+  plot_intra_density,
+  filename = "plot_intra_density.png",
+  width = 9,
+  height = 7
+)
+
+
+
+
+
+
+plot_inter_density <-
+  inter %>%
+  dplyr::mutate(class = paste(from_class, to_class, sep = "-")) %>%
+  ggplot(aes(x = abs(cor))) +
+  geom_density(aes(color = class)) +
+  theme_bw() +
+  # scale_color_manual(values = body_site_color) +
+  labs(x = "Absolute Spearman Correlation",
+       y = "Density")
+
+ggsave(
+  plot_inter_density,
+  filename = "plot_inter_density.pdf",
+  width = 9,
+  height = 7
+)
+
+ggsave(
+  plot_inter_density,
+  filename = "plot_inter_density.png",
+  width = 9,
+  height = 7
+)
+
+
+
+subject_cor_output <-
+  subject_cor %>%
+  dplyr::filter(from != to)
+
+subject_cor_output <-
+  subject_cor_output %>%
+  dplyr::left_join(new_variable_info %>% dplyr::select(-class),
+                   by = c("from" = "variable_id")) %>%
+  dplyr::rename(
+    from_Kingdom = Kingdom,
+    from_Phylum = Phylum,
+    from_Class = Class,
+    from_Order = Order,
+    from_Family = Family,
+    from_Genus = Genus,
+    from_Species = Species
+  ) %>%
+  dplyr::left_join(new_variable_info %>% dplyr::select(-class),
+                   by = c("to" = "variable_id")) %>%
+  dplyr::rename(
+    to_Kingdom = Kingdom,
+    to_Phylum = Phylum,
+    to_Class = Class,
+    to_Order = Order,
+    to_Family = Family,
+    to_Genus = Genus,
+    to_Species = Species
+  )
+
+subject_inter <-
+  subject_cor_output %>%
+  dplyr::filter(from_class != to_class)
+
+subject_intra <-
+  subject_cor_output %>%
+  dplyr::filter(from_class == to_class)
+
+# write.csv(subject_inter, file = "subject_inter.csv", row.names = FALSE)
+# write.csv(subject_intra, file = "subject_intra.csv", row.names = FALSE)

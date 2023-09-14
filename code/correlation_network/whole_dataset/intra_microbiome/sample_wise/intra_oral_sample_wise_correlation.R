@@ -80,7 +80,6 @@ dim(oral_microbiome_expression_data)
 rownames(oral_microbiome_expression_data) == oral_microbiome_variable_info$variable_id
 colnames(oral_microbiome_expression_data) == oral_microbiome_sample_info$sample_id
 
-
 ###only remain the subjects with at least >= 5
 remian_subject_id =
   oral_microbiome_sample_info %>%
@@ -117,7 +116,6 @@ length(remain_idx)
 oral_microbiome_expression_data = oral_microbiome_expression_data[remain_idx,]
 oral_microbiome_variable_info = oral_microbiome_variable_info[remain_idx,,drop = FALSE]
 
-
 ######--------------------------------------------------------------------------
 library(plyr)
 
@@ -141,7 +139,6 @@ oral_microbiome_expression_data =
   as.data.frame()
 
 rownames(oral_microbiome_expression_data) = oral_microbiome_variable_info$variable_id
-
 
 ##step 1
 ###linear mixed model to adjust the subject ID random effect, and then use the partial correlation

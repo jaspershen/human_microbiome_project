@@ -182,7 +182,7 @@ library(furrr)
 intra_nasal_sample_wise_dim = 
 dim(nasal_microbiome_expression_data)
 
-save(intra_nasal_sample_wise_dim, file = "intra_nasal_sample_wise_dim")
+# save(intra_nasal_sample_wise_dim, file = "intra_nasal_sample_wise_dim")
 
 load("intra_nasal_microbiome_lm_adjusted_cor")
 

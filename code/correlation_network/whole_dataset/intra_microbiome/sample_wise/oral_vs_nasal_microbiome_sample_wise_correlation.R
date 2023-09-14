@@ -252,8 +252,8 @@ oral_nasal_sample_wise_oral_dim =
 oral_nasal_sample_wise_nasal_dim = 
   dim(nasal_microbiome_expression_data)
 
-save(oral_nasal_sample_wise_oral_dim, file = "oral_nasal_sample_wise_oral_dim")
-save(oral_nasal_sample_wise_nasal_dim, file = "oral_nasal_sample_wise_nasal_dim")
+# save(oral_nasal_sample_wise_oral_dim, file = "oral_nasal_sample_wise_oral_dim")
+# save(oral_nasal_sample_wise_nasal_dim, file = "oral_nasal_sample_wise_nasal_dim")
 
 
 ###finally, for oral microbiome, 106 genus, for nasal_microbiome, 76 genus
@@ -308,23 +308,23 @@ library(rmcorr)
 library(future)
 library(furrr)
 
-oral_microbiome_nasal_microbiome_lm_adjusted_cor =
-  lm_adjusted_cor(
-    data_set1 = oral_microbiome_expression_data,
-    data_set2 = nasal_microbiome_expression_data,
-    sample_info = oral_microbiome_sample_info,
-    method = "all",
-    threads = 8
-  )
-
-oral_microbiome_nasal_microbiome_lm_adjusted_cor_spearman = 
-  oral_microbiome_nasal_microbiome_lm_adjusted_cor[[1]]
-
-save(
-  oral_microbiome_nasal_microbiome_lm_adjusted_cor_spearman,
-  file = "oral_microbiome_nasal_microbiome_lm_adjusted_cor_spearman",
-  compress = "xz"
-)
+# oral_microbiome_nasal_microbiome_lm_adjusted_cor =
+#   lm_adjusted_cor(
+#     data_set1 = oral_microbiome_expression_data,
+#     data_set2 = nasal_microbiome_expression_data,
+#     sample_info = oral_microbiome_sample_info,
+#     method = "all",
+#     threads = 8
+#   )
+# 
+# oral_microbiome_nasal_microbiome_lm_adjusted_cor_spearman = 
+#   oral_microbiome_nasal_microbiome_lm_adjusted_cor[[1]]
+# 
+# save(
+#   oral_microbiome_nasal_microbiome_lm_adjusted_cor_spearman,
+#   file = "oral_microbiome_nasal_microbiome_lm_adjusted_cor_spearman",
+#   compress = "xz"
+# )
 
 load("oral_microbiome_nasal_microbiome_lm_adjusted_cor_spearman")
 

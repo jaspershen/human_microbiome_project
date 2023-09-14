@@ -38,7 +38,8 @@ for (i in 1:20) {
   )
   
   nasal_sample_cor <-
-    intra_nasal_microbiome_lm_adjusted_cor
+    intra_nasal_microbiome_lm_adjusted_cor %>%
+    dplyr::filter(microbiome != metabolite)
   
   load(
     "data_analysis/correlation_network/whole_data_set/intra_nasal_microbiome/permutation/intra_nasal_sample_wise_dim"
@@ -50,8 +51,7 @@ for (i in 1:20) {
     dplyr::rename(from = microbiome, to = metabolite) %>%
     dplyr::mutate(from_class = "nasal", to_class = "nasal") %>%
     dplyr::mutate(from = paste("nasal", from, sep = ""),
-                  to = paste("nasal", to, sep = ""),
-    ) %>%
+                  to = paste("nasal", to, sep = ""),) %>%
     dplyr::select(-name)
   
   sample_cor <-

@@ -38,7 +38,9 @@ for (i in 1:20) {
   )
   
   oral_sample_cor <-
-    intra_oral_microbiome_lm_adjusted_cor
+    intra_oral_microbiome_lm_adjusted_cor %>% 
+    dplyr::filter(microbiome != metabolite)
+  
   
   load(
     "data_analysis/correlation_network/whole_data_set/intra_oral_microbiome/permutation/intra_oral_sample_wise_dim"
@@ -55,7 +57,7 @@ for (i in 1:20) {
   
   sample_cor <-
     rbind(oral_sample_cor) %>%
-    dplyr::filter(p_adjust < 0.05 / 0.63)
+    dplyr::filter(p_adjust < 0.05 / 0.6)
   
   name = apply(sample_cor, 1, function(x) {
     paste(sort(as.character(x[1:2])), collapse = "_")

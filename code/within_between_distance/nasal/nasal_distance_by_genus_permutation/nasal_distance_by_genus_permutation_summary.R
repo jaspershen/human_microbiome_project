@@ -2,7 +2,7 @@
 setwd(masstools::get_project_wd())
 rm(list = ls())
 library(tidyverse)
-
+library(plyr)
 source("code/tools.R")
 
 dir.create("data_analysis/combine_microbiome/distance/nasal/permutation")
@@ -56,7 +56,7 @@ personalized_score_permutation_trim <- filter(personalized_score_permutation, fc
 plot(personalized_score_permutation_trim$fc1,
      personalized_score_permutation_trim$fc1_sd)
 
-save(personalized_score_permutation, file = "../personalized_score_permutation")
-save(personalized_score_permutation_trim, file = "../personalized_score_permutation_trim")
+# save(personalized_score_permutation, file = "../personalized_score_permutation")
+# save(personalized_score_permutation_trim, file = "../personalized_score_permutation_trim")
 
 

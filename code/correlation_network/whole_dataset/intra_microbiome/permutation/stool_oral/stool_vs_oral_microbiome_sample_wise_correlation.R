@@ -51,8 +51,8 @@ stool_oral_sample_wise_stool_dim =
 stool_oral_sample_wise_oral_dim =
   dim(oral_microbiome_expression_data)
 
-save(stool_oral_sample_wise_stool_dim, file = "stool_oral_sample_wise_stool_dim")
-save(stool_oral_sample_wise_oral_dim, file = "stool_oral_sample_wise_oral_dim")
+# save(stool_oral_sample_wise_stool_dim, file = "stool_oral_sample_wise_stool_dim")
+# save(stool_oral_sample_wise_oral_dim, file = "stool_oral_sample_wise_oral_dim")
 
 
 ###finally, for stool microbiome, 106 genus, for oral_microbiome, 76 genus

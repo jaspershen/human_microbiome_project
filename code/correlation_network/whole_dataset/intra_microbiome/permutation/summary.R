@@ -175,3 +175,4 @@ temp <-
 
 mean(temp$percentage)
 sd(temp$percentage)
+

@@ -122,3 +122,4 @@ wilcox.test(nasal_oral_temp$percentage,
 
 wilcox.test(oral_skin_temp$percentage,
             oral_stool_temp$percentage)
+

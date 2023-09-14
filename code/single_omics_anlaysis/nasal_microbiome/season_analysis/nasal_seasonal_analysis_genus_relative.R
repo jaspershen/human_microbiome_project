@@ -8,6 +8,7 @@ setwd(masstools::get_project_wd())
 library(tidyverse)
 library(phyloseq)
 rm(list = ls())
+library(microbiomedataset)
 
 source("code/tools.R")
 
@@ -16,11 +17,26 @@ source("code/tools.R")
   load("data_analysis/nasal_microbiome/data_preparation/expression_data")
   load("data_analysis/nasal_microbiome/data_preparation/variable_info")
   
-  dim(variable_info)
+  object <-
+    create_microbiome_dataset(
+      expression_data = expression_data,
+      sample_info = data.frame(sample_info, class = "Subject"),
+      variable_info = variable_info
+    )
   
-  ns_microbiome_sample_info = sample_info
-  ns_microbiome_expression_data = expression_data
-  ns_microbiome_variable_info = variable_info
+  ###genus level
+  object <-
+    object %>%
+    microbiomedataset::summarise_variables(what = "sum_intensity",
+                                           group_by = "Genus")
+  
+  ###relative
+  object <-
+    microbiomedataset::transform2relative_intensity(object)
+  
+  ns_microbiome_sample_info = object@sample_info
+  ns_microbiome_expression_data = object@expression_data
+  ns_microbiome_variable_info = object@variable_info
   
   ns_microbiome_sample_info =
     ns_microbiome_sample_info %>%
@@ -46,7 +62,9 @@ source("code/tools.R")
 
 #######work directory
 setwd(masstools::get_project_wd())
-setwd("data_analysis/nasal_microbiome/season_analysis")
+dir.create("data_analysis/nasal_microbiome/season_analysis/genus_relative",
+           recursive = TRUE)
+setwd("data_analysis/nasal_microbiome/season_analysis/genus_relative")
 
 zero_percent =
   ns_microbiome_expression_data %>%
@@ -62,10 +80,10 @@ remain_idx = which(zero_percent < 0.99)
 length(remain_idx)
 
 ns_microbiome_expression_data =
-  ns_microbiome_expression_data[remain_idx, ]
+  ns_microbiome_expression_data[remain_idx,]
 
 ns_microbiome_variable_info =
-  ns_microbiome_variable_info[remain_idx, ]
+  ns_microbiome_variable_info[remain_idx,]
 
 ##remove duplicated sample
 which(duplicated(ns_microbiome_sample_info$sample_id))
@@ -85,12 +103,12 @@ library(pvca)
 #   })
 
 temp_data <-
-  ns_microbiome_expression_data %>% 
+  ns_microbiome_expression_data %>%
   t()
 
 rownames(temp_data) == ns_microbiome_sample_info$sample_id
 
- ####use the wilcox test to find the different taxa
+####use the wilcox test to find the different taxa
 ###set it to summer (121 - 300) and winter (0-121, 301-365)
 
 summer_idx <-
@@ -107,14 +125,16 @@ all_p_values <-
     test <-
       wilcox.test(temp_data[summer_idx, i],
                   temp_data[winter_idx, i])
-    data.frame(p = test$p.value, 
-               winter_mean = mean(temp_data[winter_idx, i], na.rm = TRUE),
-               summer_mean = mean(temp_data[summer_idx, i], na.rm = TRUE),
-               winter_summer = mean(temp_data[winter_idx, i], na.rm = TRUE) - mean(temp_data[summer_idx, i], na.rm = TRUE),
-               fc = mean(temp_data[winter_idx, i], na.rm = TRUE)/mean(temp_data[summer_idx, i], na.rm = TRUE))
+    data.frame(
+      p = test$p.value,
+      winter_mean = mean(temp_data[winter_idx, i], na.rm = TRUE),
+      summer_mean = mean(temp_data[summer_idx, i], na.rm = TRUE),
+      winter_summer = mean(temp_data[winter_idx, i], na.rm = TRUE) - mean(temp_data[summer_idx, i], na.rm = TRUE),
+      fc = mean(temp_data[winter_idx, i], na.rm = TRUE) / mean(temp_data[summer_idx, i], na.rm = TRUE)
+    )
     
-  }) %>% 
-  do.call(rbind, .) %>% 
+  }) %>%
+  do.call(rbind, .) %>%
   as.data.frame()
 
 season_p_value <-

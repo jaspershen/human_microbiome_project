@@ -1091,14 +1091,10 @@ plot <-
 plot
 
 # extrafont::loadfonts()
-ggsave(plot,
-       filename = "highlight_stool_microbiome_molecular_cor_plot.pdf",
-       width = 17,
-       height = 14)
-
-
-
-
+# ggsave(plot,
+#        filename = "highlight_stool_microbiome_molecular_cor_plot.pdf",
+#        width = 17,
+#        height = 14)
 
 
 
@@ -1182,10 +1178,10 @@ plot <-
 plot
 
 # extrafont::loadfonts()
-ggsave(plot,
-       filename = "highlight_skin_microbiome_molecular_cor_plot.pdf",
-       width = 17,
-       height = 14)
+# ggsave(plot,
+#        filename = "highlight_skin_microbiome_molecular_cor_plot.pdf",
+#        width = 17,
+#        height = 14)
 
 ###only highlight oral microbiome
 idx = 
@@ -1267,10 +1263,10 @@ plot <-
 plot
 
 # extrafont::loadfonts()
-ggsave(plot,
-       filename = "highlight_oral_microbiome_molecular_cor_plot.pdf",
-       width = 17,
-       height = 14)
+# ggsave(plot,
+#        filename = "highlight_oral_microbiome_molecular_cor_plot.pdf",
+#        width = 17,
+#        height = 14)
 
 
 
@@ -1357,10 +1353,10 @@ plot <-
 plot
 
 # extrafont::loadfonts()
-ggsave(plot,
-       filename = "highlight_nasal_microbiome_molecular_cor_plot.pdf",
-       width = 17,
-       height = 14)
+# ggsave(plot,
+#        filename = "highlight_nasal_microbiome_molecular_cor_plot.pdf",
+#        width = 17,
+#        height = 14)
 
 
 ######----------------------------------------------------------
@@ -1494,6 +1490,7 @@ plot
 
 
 #####explore the distributation 
+plot <- 
 edge_data %>%
   dplyr::left_join(node_data[, c("node", "class")], 
                    by = c("from" = "node")) %>%
@@ -1512,6 +1509,9 @@ edge_data %>%
   facet_grid(cols = vars(direction), scales = "free_x") +
   base_theme +
   labs(x = "Correlation", y = "Density")
+
+ggsave(plot, filename = "cor_density.pdf", width = 12, height = 7)
+ggsave(plot, filename = "cor_density.png", width = 12, height = 7)
 
 median_int = 
 skin_microbiome_expression_data[match(node_data$node[grep("skin", node_data$node)],
@@ -1610,7 +1610,6 @@ plot
 #   width = 9,
 #   height = 7
 # )
-
 
 
 # #####output result

@@ -443,7 +443,7 @@ setwd("data_analysis/combine_microbiome/distance/nasal/")
 all_genus = nasal_braydist_by_genus$genus %>%
   unique()
 
-save(all_genus, file = "all_genus")
+# save(all_genus, file = "all_genus")
 
 # final_result =
 #   purrr::map(1:length(unique(nasal_braydist_by_genus$genus)), function(idx) {

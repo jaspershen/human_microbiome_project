@@ -456,9 +456,6 @@ load("cor_data")
 plot(cor_data$cor, -log(cor_data$p_value_adjust, 10))
 
 
-
-
-
 cor_data %>% 
   dplyr::filter(from_class != to_class) %>% 
   dplyr::filter(abs(cor) > 0.25 & p_value_adjust < 0.05) %>% 
